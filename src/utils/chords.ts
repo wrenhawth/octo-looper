@@ -23,7 +23,7 @@ type ChordWithOctaves = {
 }
 
 const findChordThatStartsWithNote = (chordList: string[], note: string): string | null => {
-    const noteName = Number.isNaN(note.at(1)) ? note.substring(0, 2) : note.substring(0, 1)
+    const noteName = Number.isNaN(note[1]) ? note.substring(0, 2) : note.substring(0, 1)
     for (const chord of chordList) {
         if (chord.startsWith(noteName)) {
             return chord
