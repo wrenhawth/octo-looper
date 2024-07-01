@@ -1,7 +1,6 @@
 import React from "react";
 import { SlButton } from "@shoelace-style/shoelace/dist/react";
 import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index.js"
-import { setBasePath } from "@shoelace-style/shoelace";
 
 
 type Props = {

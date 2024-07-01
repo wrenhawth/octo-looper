@@ -1,7 +1,5 @@
-import React from "react";
-import { scaleToTriads } from "../utils/chords";
-import SlButton from "@shoelace-style/shoelace/dist/react/button/index";
-import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index"
+import SlButton from "@shoelace-style/shoelace/dist/react/button/index.js";
+import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index.js"
 import { CHORD_TO_EMOJI, ChordSymbol, MOVE_CHORD_LEFT, MOVE_CHORD_MOOD, MOVE_CHORD_RIGHT } from "../utils/basicChords";
 
 type Props = {

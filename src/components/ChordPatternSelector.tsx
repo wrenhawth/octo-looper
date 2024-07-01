@@ -1,7 +1,7 @@
 import React from "react";
 import { SlButton } from "@shoelace-style/shoelace/dist/react";
 
-import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index"
+import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index.js"
 
 import { CHORD_PATTERNS_LIST, CHORD_PATTERN_LABELS, ChordPattern } from "../utils/chordPatterns";
 

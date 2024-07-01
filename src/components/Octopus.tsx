@@ -1,10 +1,9 @@
-import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import React, { SetStateAction, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import { Context, Loop, Time, getContext, getDraw, getTransport, setContext } from "tone";
+import {  Time, getContext, getDraw, getTransport } from "tone";
 import { PlayButton } from "./PlayButton";
-import Tone from 'tone';
 gsap.registerPlugin(useGSAP);
 
 type Props = {

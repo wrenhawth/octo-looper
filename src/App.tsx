@@ -17,7 +17,7 @@ import { Octopus } from './components/Octopus';
 import { DRUM_PRESETS, DRUM_PRESETS_LOOPS, DrumEvent, DrumPreset } from './utils/drumPresets';
 import { RhythmSelector } from './components/RhythmSelector';
 import { fillDrumPreset } from './utils/rhythms';
-import { CHORD_PATTERNS, ChordEvent, ChordPattern, fillChordPattern } from './utils/chordPatterns';
+import {  ChordEvent, ChordPattern, fillChordPattern } from './utils/chordPatterns';
 import { ChordPatternSelector } from './components/ChordPatternSelector';
 
 // import '@shoelace-style/shoelace/dist/themes/light.css';

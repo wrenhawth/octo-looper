@@ -1,9 +1,9 @@
 import React from "react";
-import SlOption from '@shoelace-style/shoelace/dist/react/option/index';
-import SlSelect from '@shoelace-style/shoelace/dist/react/select/index';
-import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index"
+import SlOption from '@shoelace-style/shoelace/dist/react/option/index.js';
+import SlSelect from '@shoelace-style/shoelace/dist/react/select/index.js';
+import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index.js"
 
-import { DRUM_LABELS, DRUM_PRESETS, DRUM_PRESET_LIST, DrumPreset } from "../utils/drumPresets";
+import { DRUM_LABELS, DRUM_PRESET_LIST, DrumPreset } from "../utils/drumPresets";
 
 type Props = {
     selectedRhythm: DrumPreset
