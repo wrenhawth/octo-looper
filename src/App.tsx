@@ -17,26 +17,21 @@ import { Octopus } from './components/Octopus';
 import { DRUM_PRESETS, DRUM_PRESETS_LOOPS, DrumEvent, DrumPreset } from './utils/drumPresets';
 import { RhythmSelector } from './components/RhythmSelector';
 import { fillDrumPreset } from './utils/rhythms';
+import { CHORD_PATTERNS, ChordEvent, ChordPattern, fillChordPattern } from './utils/chordPatterns';
+import { ChordPatternSelector } from './components/ChordPatternSelector';
 
 // import '@shoelace-style/shoelace/dist/themes/light.css';
 // import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path';
 
 // setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/');
 
-const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol) => {
+const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, chordPattern: ChordPattern) => {
   part.clear()
   const triads = scaleToTriads(DEFAULT_SCALE_OPTIONS)
   const chord = triads[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4']
-  const newValue: [string, string[]][] = [
-    [`${i}:0`, chord],
-    [`${i}:1`, chord],
-    [`${i}:2`, chord],
-    [`${i}:3`, chord],
-    [`${i}:3:2`, chord]
-  ]
+  const newValue = fillChordPattern(i, chord, chordPattern)
   newValue.forEach((v) => {
-    const [time, chord] = v
-    part.at(time, chord)
+    part.at(v.time, v)
   })
 }
 
@@ -49,8 +44,7 @@ const updateRhythmPart = (part: DrumPart, drumPreset: DrumPreset) => {
   })
 }
 
-type ChordPart = Part<[string, string[]]>
-
+type ChordPart = Part<ChordEvent>
 type ChordParts = Array<{
   part: ChordPart
   chord: ChordSymbol
@@ -66,6 +60,8 @@ function App() {
 
   const chordSynth = React.useRef<PolySynth | null>(null)
   const [chordList, setChordList] = React.useState<ChordSymbol[]>(INITIAL_CHORD_LIST)
+  const [chordPattern, setChordPattern] = React.useState<ChordPattern>('DDDD')
+
   const chordPartRefs = React.useRef<ChordParts | null>(null)
 
   const drumSampler = React.useRef<Sampler | null>(null)
@@ -119,16 +115,10 @@ function App() {
 
           const initialChord = initialTriads[CHORD_TO_INDEX[initialRomanNumeral]]?.notes || ['C5']
 
-          const initialPartValue: [string, string[]][] = [
-            [`${i}:0`, initialChord],
-            [`${i}:1`, initialChord],
-            [`${i}:2`, initialChord],
-            [`${i}:3`, initialChord],
-            [`${i}:3:2`, initialChord],
-          ]
+          const initialPartValue = fillChordPattern(i, initialChord, 'DDDD')
 
-          const part = new Part((time, pitch) => {
-            chordSynth.current?.triggerAttackRelease(pitch || ['C4'], '8n', time)
+          const part = new Part((time, value) => {
+            chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], '8n', time, value.velocity)
           },
             initialPartValue
           ).start(0)
@@ -148,12 +138,13 @@ function App() {
 
   useEffect(() => {
     chordList.forEach((c, i) => {
-      if (chordPartRefs.current && chordPartRefs.current[i].chord !== c) {
-        updateChordPart(chordPartRefs.current[i].part, i, c)
+      if (chordPartRefs.current) { // && chordPartRefs.current[i].chord !== c) {
+        updateChordPart(chordPartRefs.current[i].part, i, c, chordPattern)
         chordPartRefs.current[i].chord = c
+        return
       }
     })
-  }, [chordList])
+  }, [chordList, chordPattern])
 
   useEffect(() => {
     console.log(drumPreset)
@@ -180,6 +171,8 @@ function App() {
       </header>
       <main className="main">
         <div className='top'>
+          <h3 style={{ marginBottom: 0 }}>❔↓ Mix It Up ↓❔</h3>
+
           <SingleChord chordSymbol={chordList[0]} setChord={getUpdateChordInListFunction(0)} />
         </div>
         <div className='middle'>
@@ -196,6 +189,7 @@ function App() {
         </div>
         <div>
           <SingleChord chordSymbol={chordList[2]} setChord={getUpdateChordInListFunction(2)} />
+          <ChordPatternSelector setSelectedPattern={setChordPattern} selectedPattern={chordPattern} />
 
         </div>
 

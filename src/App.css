@@ -85,7 +85,7 @@ sl-button:hover>sl-icon {
 
   h1 {
     color: white;
-
+    margin-top: 0;
   }
 
   padding-bottom: 10px;
