@@ -134,6 +134,9 @@ sl-select::part(base) {
   border-radius: 25%;
 }
 
+.curve-arrow {
+  font-size: 32px;;
+}
 .octopus {
   margin: 0;
   /* writing-mode: vertical-lr;

@@ -42,7 +42,7 @@ export const SingleChord = (props: Props) => {
                 <SlIcon name="arrow-right" />
             </SlButton>
         </div>
-        <SlButton variant="default" size="medium" circle onClick={shiftMood}>
+        <SlButton variant="default" size="small" circle onClick={shiftMood}>
                 {isMajorChord && <SlIcon name="emoji-smile" />}
                 {!isMajorChord && <SlIcon name="emoji-smile-upside-down" />}
         </SlButton>

@@ -166,12 +166,15 @@ function App() {
   return (
     <>
       <header className='app-header'>
-        <h1>OctoLooper</h1>
+        <h1 style={{ margin: 0 }}>OctoLooper</h1>
         <RhythmSelector setSelectedRhythm={setDrumPreset} selectedRhythm={drumPreset} />
       </header>
       <main className="main">
         <div className='top'>
-          <h3 style={{ marginBottom: 0 }}>❔↓ Mix It Up ↓❔</h3>
+          <h3 style={{ margin: 0 }}>
+            <span className='curve-arrow'> ⤹ </span> Mix It Up <span className='curve-arrow'> ⤸ </span>
+
+          </h3>
 
           <SingleChord chordSymbol={chordList[0]} setChord={getUpdateChordInListFunction(0)} />
         </div>
