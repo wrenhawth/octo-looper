@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react';
+import AlernateBassDrumUrl from './assets/sounds/Boom-Bap-Kick.wav'
+import BassDrumUrl from './assets/sounds/bd_pure.flac'
+import CymbalUrl from './assets/sounds/drum_cymbal_hard.flac'
+import SnareDrumUrl from './assets/sounds/drum_snare_hard.flac'
+import ClosedHiHatUrl from './assets/sounds/drum_cymbal_closed.flac'
+import OpenHiHatUrl from './assets/sounds/drum_cymbal_open.flac'
+import PedalHiHatUrl from './assets/sounds/Boom-Bap-Pedal-Hat.wav'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 
 import { DEFAULT_SCALE_OPTIONS, scaleToTriads } from './utils/chords';
-import { Part, PolySynth, Synth } from 'tone';
+import { Part, PolySynth, Sampler, Synth } from 'tone';
 import { CHORD_TO_INDEX, ChordSymbol } from './utils/basicChords';
 import _ from 'lodash';
 import { SingleChord } from './components/SingleChord';
 import { Octopus } from './components/Octopus';
+import { DRUM_PRESETS } from './utils/drumPresets';
 
 // import '@shoelace-style/shoelace/dist/themes/light.css';
 // import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path';
@@ -38,17 +46,50 @@ type ChordParts = Array<{
   chord: ChordSymbol
 }>
 
-const INITIAL_CHORD_LIST: ChordSymbol[] = ['I', 'IV', 'vi', 'V']
 
+
+const INITIAL_CHORD_LIST: ChordSymbol[] = ['I', 'IV', 'vi', 'V']
 
 function App() {
   const [isStarted, setIsStarted] = React.useState(false)
 
   const chordSynth = React.useRef<PolySynth | null>(null)
+  const drumSampler = React.useRef<Sampler | null>(null)
   const [chordList, setChordList] = React.useState<ChordSymbol[]>(INITIAL_CHORD_LIST)
   const chordPartRefs = React.useRef<ChordParts | null>(null)
+  const drumPartRef = React.useRef<Part | null>(null)
 
-  // const partRefs = React.useRef<Part<[string, string[]]>[] | null>(null)
+  useEffect(() => {
+    if (isStarted) {
+      drumSampler.current = new Sampler({
+        'B0': AlernateBassDrumUrl,
+        'C1': AlernateBassDrumUrl,
+        // 'C1': BassDrumUrl,
+        'D1': SnareDrumUrl,
+        'Ab1': PedalHiHatUrl,
+        'F#1': ClosedHiHatUrl,
+        'Bb1': OpenHiHatUrl,
+        'C#2': CymbalUrl
+      },
+        {
+          onload: () => {
+            console.log('loaded')
+          },
+        }
+      ).toDestination()
+      
+      const drumPart = new Part((time, value) => {
+        drumSampler.current?.triggerAttackRelease(value.pitch, 1, time, value.velocity)
+      },
+        DRUM_PRESETS.BOOTS_AND_CATS
+      ).start('0:0')
+      drumPart.loop = true;
+      drumPart.loopStart = '0:0'
+      drumPart.loopEnd = '1m'
+      drumPartRef.current = drumPart
+    }
+  }, [isStarted])
+
 
   useEffect(() => {
     if (isStarted) {
@@ -78,7 +119,8 @@ function App() {
             initialPartValue
           ).start(0)
           part.loop = true
-          part.loopStart = '0'
+          part.humanize = true
+          part.loopStart = '0:0'
           part.loopEnd = '4m'
           chordPartRefs.current.push({
             part,
@@ -121,39 +163,8 @@ function App() {
           <SingleChord chordSymbol={chordList[3]} setChord={getUpdateChordInListFunction(3)} />
 
           <div className="octo">
-            {/* <SlAnimation
-              easing='linear'
-              play={isPlaying}
-              duration={loopInSeconds * 1000}
-              keyframes={[
-                {
-                  offset: 0,
-                  transformOrigin: 'center center',
-                  transform: 'rotate(0)'
-                },
-                {
-                  offset: 0.25,
-                  transformOrigin: 'center center',
-                  transform: 'rotate(90deg)'
-                },
-                {
-                  offset: 0.5,
-                  transformOrigin: 'center center',
-                  transform: 'rotate(180deg)'
-                },
-                {
-                  offset: 0.75,
-                  transformOrigin: 'center center',
-                  transform: 'rotate(270deg)'
-                }, {
-                  offset: 1,
-                  transformOrigin: 'center center',
-                  transform: 'rotate(360deg)'
-                },
-              ]}
-            > */}
+
             <Octopus isStarted={isStarted} setIsStarted={setIsStarted} />
-            {/* </SlAnimation> */}
 
 
           </div>
@@ -161,7 +172,7 @@ function App() {
 
         </div>
         <div>
-        <SingleChord chordSymbol={chordList[2]} setChord={getUpdateChordInListFunction(2)} />
+          <SingleChord chordSymbol={chordList[2]} setChord={getUpdateChordInListFunction(2)} />
 
         </div>
 

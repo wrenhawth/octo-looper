@@ -2,9 +2,11 @@
 
 #root {
   max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: indigo;
 }
 
 .logo {
@@ -76,18 +78,36 @@ sl-button:hover > sl-icon {
 
 .main {
   background-color: hsla(220, 100%, 30%, .9);
-  min-height: 100vh;
+  max-height: 100vh;
+  min-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: white;
+  border-radius: 25%;
 }
 
 .octopus {
-  font-size: 72px;
-  margin-top: 24px;
+  margin: 0;
+  /* writing-mode: vertical-lr;
+  text-orientation: upright; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .octo {
+    font-size: 72px;
+    line-height: 72px;;
+  }
+  .arrow {
+    font-size: 48px;
+    line-height: 48px;;
+    &.hidden{
+      visibility: hidden;
+    }
+  }
 }
 
 
