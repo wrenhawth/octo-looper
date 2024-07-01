@@ -63,39 +63,8 @@ const toScaleName = (scale: Scale) => {
     const { tonic, mode, octave } = scale
     return `${tonic}${octave} ${mode}`
 }
-// const getScaleDegrees = (scale: Scale) => {
-//     return Scale.degrees(toScaleName(tonic, mode, octave))
-// }
 
 export const getTriadsForKey = (scale: Scale) => {
     const { mode, tonic } = scale
     return Mode.triads(mode, tonic)
 }
-
-// export const scaleToNotes = (tonic = DEFAULT_TONIC, mode = DEFAULT_MODE, tonicOctave = 4) => {
-//     return Scale.rangeOf(toScaleName(tonic, mode, tonicOctave))(`${tonic}${tonicOctave}`, `${tonic}${tonicOctave + 1}`)
-// }
-
-// export const chordToNotes = (chord: ChordWithTonic) => {
-//     return Chord.notes(chord.chordName, chord.tonicNote)
-// }
-
-// export const getTriadNotesForKey = (tonic = DEFAULT_TONIC, mode = DEFAULT_MODE, octave = 4) => {
-//     const triads = Mode.triads(mode, tonic)
-//     const scaleDegrees = getScaleDegrees(tonic, mode, octave)
-
-//     return triads.map((chordName, index) => {
-//         console.log(chordName)
-//         return Chord.notes(chordName, scaleDegrees(index + 1))
-//     })
-// }
-
-// export const getSeventhChordNotesForKey = (tonic = DEFAULT_TONIC, mode = DEFAULT_MODE, octave = 4) => {
-//     const triads = Mode.seventhChords(mode, tonic)
-//     const scaleDegrees = getScaleDegrees(tonic, mode, octave)
-
-//     return triads.map((chordName, index) => {
-//         console.log(chordName)
-//         return Chord.notes(chordName, scaleDegrees(index + 1))
-//     })
-// }

@@ -15,9 +15,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -26,6 +28,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -72,13 +75,55 @@ sl-button>sl-icon:hover {
   vertical-align: middle;
 }
 
-sl-button:hover > sl-icon {
+sl-button:hover>sl-icon {
   font-weight: bold;
 }
 
+.app-header {
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    color: white;
+
+  }
+
+  padding-bottom: 10px;
+  align-items: center;
+
+}
+
+
+.rhythm-preset-select {
+  max-width: 400px;
+}
+
+.preset-select::part(form-control-label) {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+.preset-select::part(display-input) {
+  text-align: center;
+}
+
+/* .form-control__label {
+  color: white;
+}
+.preset-select {
+  label {
+    color: white;
+  }
+}*/
+
+sl-select::part(base) {
+  color: white
+} 
+
 .main {
   background-color: hsla(220, 100%, 30%, .9);
-  max-height: 100vh;
+  /* max-height: 100vh; */
+  min-height: 400px;
   min-width: 100%;
   display: flex;
   flex-direction: column;
@@ -97,14 +142,19 @@ sl-button:hover > sl-icon {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   .octo {
     font-size: 72px;
-    line-height: 72px;;
+    line-height: 72px;
+    ;
   }
+
   .arrow {
     font-size: 48px;
-    line-height: 48px;;
-    &.hidden{
+    line-height: 48px;
+    ;
+
+    &.hidden {
       visibility: hidden;
     }
   }
