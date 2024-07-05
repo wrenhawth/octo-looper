@@ -79,10 +79,6 @@ export const Octopus = (props: Props) => {
                     } else {
                         setIsPlaying(true)
                         getTransport().toggle()
-                        contextSafe(() => {
-                            // tl.current?.progress(currentTime.current)
-                            tl.current?.resume()
-                        })()
                     }
                 } else {
                     setIsStarted(true)
@@ -90,11 +86,13 @@ export const Octopus = (props: Props) => {
                     //   part.start('0')
                     // })
                     // setContext(new Context({ lookAhead: 0 }))
-                    getTransport().start(1)
+                    getTransport().start("+0.1")
                     setIsPlaying(true)
                     setLengthOfLoop(Time('4m').toSeconds())
 
-
+                    getTransport().loop = true
+                    getTransport().loopStart = 0
+                    getTransport().loopEnd = '4m'
                     await getContext().resume()
                     getTransport().scheduleRepeat((time) => {
                         getDraw().schedule(() => {

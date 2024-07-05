@@ -1,15 +1,9 @@
 import React, { useEffect } from 'react';
-import BassDrumUrl from './assets/sounds/Boom-Bap-Kick.wav'
-import CymbalUrl from './assets/sounds/drum_cymbal_hard.flac'
-import SnareDrumUrl from './assets/sounds/drum_snare_hard.flac'
-import ClosedHiHatUrl from './assets/sounds/drum_cymbal_closed.flac'
-import OpenHiHatUrl from './assets/sounds/drum_cymbal_open.flac'
-import PedalHiHatUrl from './assets/sounds/Boom-Bap-Pedal-Hat.wav'
 
 import './App.css'
 
 import { DEFAULT_SCALE_OPTIONS, scaleToTriads } from './utils/chords';
-import { Part, PolySynth, Sampler, Synth } from 'tone';
+import { Part } from 'tone';
 import { CHORD_TO_INDEX, ChordSymbol } from './utils/basicChords';
 import _ from 'lodash';
 import { SingleChord } from './components/SingleChord';
@@ -17,13 +11,11 @@ import { Octopus } from './components/Octopus';
 import { DRUM_PRESETS, DRUM_PRESETS_LOOPS, DrumEvent, DrumPreset } from './utils/drumPresets';
 import { RhythmSelector } from './components/RhythmSelector';
 import { fillDrumPreset } from './utils/rhythms';
-import {  ChordEvent, ChordPattern, fillChordPattern } from './utils/chordPatterns';
+import { ChordEvent, ChordPattern, fillChordPattern } from './utils/chordPatterns';
 import { ChordPatternSelector } from './components/ChordPatternSelector';
-
-// import '@shoelace-style/shoelace/dist/themes/light.css';
-// import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path';
-
-// setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/');
+import { OctoStage } from './components/canvas/OctoStage';
+import { useChordSynth } from './hooks/useChordSynth';
+import { useDrumSampler } from './hooks/useDrumSampler';
 
 const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, chordPattern: ChordPattern) => {
   part.clear()
@@ -58,51 +50,31 @@ const INITIAL_CHORD_LIST: ChordSymbol[] = ['I', 'I', 'I', 'I']
 function App() {
   const [isStarted, setIsStarted] = React.useState(false)
 
-  const chordSynth = React.useRef<PolySynth | null>(null)
+  const chordSynth = useChordSynth(isStarted)
+  const drumSampler = useDrumSampler(isStarted)
   const [chordList, setChordList] = React.useState<ChordSymbol[]>(INITIAL_CHORD_LIST)
   const [chordPattern, setChordPattern] = React.useState<ChordPattern>('DDDD')
 
   const chordPartRefs = React.useRef<ChordParts | null>(null)
 
-  const drumSampler = React.useRef<Sampler | null>(null)
   const [drumPreset, setDrumPreset] = React.useState<DrumPreset>(DRUM_PRESETS.BOOTS_AND_CATS)
   const drumPartRef = React.useRef<Part | null>(null)
 
   useEffect(() => {
-    if (isStarted) {
-      drumSampler.current = new Sampler({
-        'B0': BassDrumUrl,
-        'C1': BassDrumUrl,
-        // 'C1': BassDrumUrl,
-        'D1': SnareDrumUrl,
-        'Ab1': PedalHiHatUrl,
-        'F#1': ClosedHiHatUrl,
-        'Bb1': OpenHiHatUrl,
-        'C#2': CymbalUrl
-      },
-        {
-          onload: () => {
-            console.log('loaded')
-          },
-        }
-      ).toDestination()
-
-      const drumPart = new Part<DrumEvent>((time, value) => {
-        drumSampler.current?.triggerAttackRelease(value.notes, 1, time, value.velocity)
-      },
-        DRUM_PRESETS_LOOPS.BOOTS_AND_CATS
-      ).start('0:0')
-      drumPart.loop = true;
-      drumPart.loopStart = '0:0'
-      drumPart.loopEnd = '1m'
-      drumPartRef.current = drumPart
-    }
-  }, [isStarted])
+    const drumPart = new Part<DrumEvent>((time, value) => {
+      drumSampler.current?.triggerAttackRelease(value.notes, 1, time, value.velocity)
+    },
+      DRUM_PRESETS_LOOPS.BOOTS_AND_CATS
+    ).start('0:0')
+    drumPart.loop = true;
+    drumPart.loopStart = '0:0'
+    drumPart.loopEnd = '1m'
+    drumPartRef.current = drumPart
+  }, [drumSampler, isStarted])
 
 
   useEffect(() => {
     if (isStarted) {
-      chordSynth.current = new PolySynth(Synth).toDestination()
       if (chordPartRefs.current == null) {
         const initialTriads = scaleToTriads(DEFAULT_SCALE_OPTIONS)
         // chordPartRefs.current = []
@@ -134,7 +106,7 @@ function App() {
         })
       }
     }
-  }, [isStarted])
+  }, [chordSynth, isStarted])
 
   useEffect(() => {
     chordList.forEach((c, i) => {
@@ -165,6 +137,7 @@ function App() {
 
   return (
     <>
+      <OctoStage />
       <header className='app-header'>
         <h1 style={{ margin: 0 }}>OctoLooper</h1>
         <RhythmSelector setSelectedRhythm={setDrumPreset} selectedRhythm={drumPreset} />
