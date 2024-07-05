@@ -103,6 +103,7 @@ sl-button:hover>sl-icon {
   font-weight: bold;
   font-size: 18px;
 }
+
 .preset-select::part(display-input) {
   text-align: center;
 }
@@ -118,7 +119,7 @@ sl-button:hover>sl-icon {
 
 sl-select::part(base) {
   color: white
-} 
+}
 
 .main {
   background-color: hsla(220, 100%, 30%, .9);
@@ -135,8 +136,15 @@ sl-select::part(base) {
 }
 
 .curve-arrow {
-  font-size: 32px;;
+  font-size: 32px;
+  ;
 }
+
+.octo {
+  font-size: 72px;
+  line-height: 72px;
+}
+
 .octopus {
   margin: 0;
   /* writing-mode: vertical-lr;
@@ -146,11 +154,7 @@ sl-select::part(base) {
   align-items: center;
   justify-content: center;
 
-  .octo {
-    font-size: 72px;
-    line-height: 72px;
-    ;
-  }
+
 
   .arrow {
     font-size: 48px;
@@ -192,4 +196,87 @@ sl-select::part(base) {
   align-items: center;
   display: flex;
   ;
+}
+
+.label-on-left {
+  --label-width: 3.75rem;
+  --gap-width: 1rem;
+}
+
+.label-on-left+.label-on-left {
+  margin-top: var(--sl-spacing-medium);
+}
+
+.label-on-left::part(form-control) {
+  display: grid;
+  grid: auto / 1fr 1fr;
+  gap: var(--sl-spacing-3x-small) var(--gap-width);
+  align-items: center;
+}
+
+.label-on-left::part(form-control-label) {
+  text-align: center;
+}
+
+.label-on-left::part(form-control-help-text) {
+  grid-column-start: 2;
+}
+
+.top-tabs::part(tabs) {
+  justify-content: center;
+  gap: 12px;
+  border-top: 0;
+}
+
+.tab::part(base) {
+  color: white;
+  /* background-color: var(--sl-color-green-500); */
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border: 1px solid white;
+  border-top: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.start-tab::part(base) {
+  background-color: var(--sl-color-lime-500);
+}
+
+.drums-tab::part(base) {
+  background-color: var(--sl-color-green-500);
+}
+
+.chords-tab::part(base) {
+  background-color: var(--sl-color-emerald-500);
+}
+
+sl-tab[active]::part(base) {
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+.beat-select {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-direction: row;
+  padding: 16px;
+  align-items: center;
+}
+
+.tempo-selector {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.step-header {
+  font-weight: bold;
+  margin: 8px;
+  .step-num {
+    font-weight: bolder;
+    text-decoration: underline;
+  }
 }

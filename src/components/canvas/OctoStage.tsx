@@ -4,10 +4,13 @@ import { Container, Stage } from '@pixi/react';
 import { HEIGHT, WIDTH } from './constants';
 import { Octo } from './Octo';
 import { Chords } from './Chords';
+import { ChordSymbol } from '../../utils/basicChords';
 
-
-
-export const OctoStage = () => {
+type OctoStageProps = {
+    chordList: ChordSymbol[]
+    setChordList: React.Dispatch<React.SetStateAction<ChordSymbol[]>>
+}
+export const OctoStage = ({chordList, setChordList}: OctoStageProps) => {
 
     return (
         <Stage
@@ -15,9 +18,9 @@ export const OctoStage = () => {
             height={HEIGHT}
             options={{ background: 'hsla(220, 100%, 30%, .9)' }}
         >
-            <Container>
-                <Octo />
-                <Chords totalChords={6} />
+            <Container sortableChildren>
+                <Octo /> 
+                <Chords chordList={chordList} setChordList={setChordList} />
             </Container>
         </Stage>
     )

@@ -3,6 +3,7 @@ import { ComponentProps, useState } from "react"
 import { getTransport } from "tone"
 
 import { HEIGHT, WIDTH } from "./constants"
+import { ZINDEX } from "../../utils/zIndex"
 
 export const Octo = () => {
     const [octoAngle, setOctoAngle] = useState(0)
@@ -19,7 +20,8 @@ export const Octo = () => {
             y={HEIGHT / 2}
             anchor={0.5}
             angle={octoAngle}
-        >
+            zIndex={ZINDEX.OCTOPUS}
+            >
             <Text
                 text="⬆"
                 // y={HEIGHT / 2 - 50}
@@ -38,9 +40,13 @@ export const Octo = () => {
                 y={0}
                 anchor={0.5}
                 eventMode='static'
-                pointerdown={(event) => {
-                    console.log(`octopus`)
-                    console.log(event)
+                pointerdown={() => {
+                    const transport = getTransport()
+                    if (transport.state === 'started') {
+                        transport.pause()
+                    } else {
+                        transport.start()
+                    }
                 }}
                 style={{
                     fontSize: 82,
