@@ -2,11 +2,12 @@ import { Container, Text, useTick } from "@pixi/react"
 import { ComponentProps, useState } from "react"
 import { getTransport } from "tone"
 
-import { HEIGHT, WIDTH } from "./constants"
 import { ZINDEX } from "../../utils/zIndex"
+import { useCanvasWidth } from "./utils"
 
 export const Octo = () => {
     const [octoAngle, setOctoAngle] = useState(0)
+    const width = useCanvasWidth()
     useTick(() => {
         const transport = getTransport()
         if (transport.state === 'started') {
@@ -16,8 +17,8 @@ export const Octo = () => {
 
     return (
         <Container
-            x={WIDTH / 2}
-            y={HEIGHT / 2}
+            x={width / 2}
+            y={width / 2}
             anchor={0.5}
             angle={octoAngle}
             zIndex={ZINDEX.OCTOPUS}

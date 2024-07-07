@@ -16,8 +16,9 @@ const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, 
     part.clear()
     const triads = scaleToTriads(DEFAULT_SCALE_OPTIONS)
     const seventhChords = scaleToSevenths(DEFAULT_SCALE_OPTIONS)
-    const chord = useSeventh ? seventhChords[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4'] : triads[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4']
-    console.log(arpPattern)
+    const chord = useSeventh ?
+        seventhChords[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4'] :
+        triads[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4']
     const newValue = fillChordPattern(i, chord, chordPattern, arpPattern || undefined)
     newValue.forEach((v) => {
         part.at(v.time, v)
@@ -111,7 +112,6 @@ export const useChordPart = (options: ChordPartOptions) => {
                         chord: c
                     })
                     part.start(0)
-                    console.log(part)
                 }
 
                 updateChordPart(chordPartRefs.current[i].part, i, c, chordPattern, arpPattern, useSeventh[i])

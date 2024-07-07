@@ -33,7 +33,6 @@ export const RhythmSelector = (props: Props) => {
                         value={d}
                         selected={isSelected}
                         onClick={() => {
-                            console.log(d)
                             setSelectedRhythm(d)
                         }}
                     >

@@ -7,7 +7,6 @@ type DrumPart = Part<DrumEvent>
 
 const updateRhythmPart = (part: DrumPart, drumPreset: DrumPreset) => {
     const newValue = fillDrumPreset(drumPreset)
-    console.log(newValue)
     newValue.forEach((v) => {
         const { time } = v
         part.at(time, v)

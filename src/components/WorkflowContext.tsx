@@ -13,7 +13,7 @@ export const WorkflowContext = createContext(initialWorkflow);
 export const WorkflowDispatchContext = createContext<React.Dispatch<WorkflowAction> | null>(null);
 
 function workflowReducer(workflow: Workflow, action: WorkflowAction) {
-    console.log(workflow)
+    // console.log(workflow)
     switch (action.type) {
         case "setStep": {
             const areDrumsEnabled = action.step === WorkflowStep.DRUMS ? true : workflow.areDrumsEnabled

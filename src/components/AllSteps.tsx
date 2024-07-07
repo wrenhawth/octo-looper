@@ -24,7 +24,6 @@ export const AllSteps = () => {
     const [tempo, setTempo] = React.useState<number>(120)
 
     useEffect(() => {
-        console.log(tempo)
         const transport = getTransport()
         transport.bpm.rampTo(tempo, 2)
     }, [tempo])

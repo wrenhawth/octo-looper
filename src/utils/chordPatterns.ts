@@ -25,8 +25,10 @@ export const fillChordPattern = (
     const generator = patternName ? PatternGenerator(chord.length, patternName) : null
     for (let q = 0; q < 4; q += 1) {
         for (let s = 0; s < 4; s += 1) {
-            const notes = generator ? [chord[generator.next().value]] : chord
+
             if (currentTime && `${0}:${q}:${s}` === Time(currentTime).toBarsBeatsSixteenths()) {
+                const notes = generator ? [chord[generator.next().value]] : chord
+
                 filledPattern.push({
                     time: `${bar}:${q}:${s}`,
                     notes,
@@ -46,17 +48,20 @@ export const fillChordPattern = (
 
 }
 
-export type ChordPattern = 'DDDD' | 'DDUUDU' | 'DDDDU'
+export type ChordPattern = 'DDDD' | 'DDUUDU' | 'DDDDU' | 'DUDUDUDU'
+
 export const CHORD_PATTERNS_LIST = [
     'DDDD',
     'DDUUDU',
-    'DDDDU'
+    'DDDDU',
+    'DUDUDUDU',
 ] as const
 
 export const CHORD_PATTERN_LABELS = {
     DDDD: 'xoxoxoxo',
     DDUUDU: 'xoxxoxxx',
-    DDDDU: 'xoxoxoxx'
+    DDDDU: 'xoxoxoxx',
+    DUDUDUDU: 'xxxxxxxx'
 }
 
 const DDDD = [
@@ -83,11 +88,22 @@ const DDDDU = [
     '0:3:2',
 ]
 
+const DUDUDUDU = [
+    '0:0',
+    '0:0:2',
+    '0:1',
+    '0:1:2',
+    '0:2:0',
+    '0:2:2',
+    '0:3:0',
+    '0:3:2'
+]
 
 export const CHORD_PATTERNS = {
     DDDD,
     DDUUDU,
     DDDDU,
+    DUDUDUDU
 }
 
 export const ARP_PATTERNS_LIST = [
@@ -108,7 +124,7 @@ export const ARP_PATTERN_LABELS = {
     "randomWalk": 'Walk Around'
 }
 
-export type ArpPattern = 
+export type ArpPattern =
     false |
     "up" |
     "downUp" |

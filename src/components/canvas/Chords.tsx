@@ -1,11 +1,11 @@
 import { Container, Graphics, Text } from "@pixi/react"
-import { HEIGHT, WIDTH } from "./constants"
 import { ComponentProps, useCallback, useState } from "react"
 
 import '@pixi/events'
 import { CHORD_TO_EMOJI, CHORD_TO_EMOJI_SIZE, CHORD_TO_HUE, CHORD_TO_MOOD_IMAGE, ChordSymbol, MOVE_CHORD_LEFT, MOVE_CHORD_MOOD, MOVE_CHORD_RIGHT } from "../../utils/basicChords"
 import { Arc, Point } from "@flatten-js/core"
 import { TextStyle } from "pixi.js"
+import { useCanvasWidth } from "./utils"
 
 type ChordSetProps = {
     chordList: ChordSymbol[]
@@ -17,6 +17,8 @@ type ChordSetProps = {
 
 export const Chords = (props: ChordSetProps) => {
     const { chordList, setChordList, useSeventh, setUseSeventh } = props
+    const width = useCanvasWidth()
+
     const totalChords = chordList.length
 
     const getUpdateChordInListFunction = (i: number) => {
@@ -34,7 +36,6 @@ export const Chords = (props: ChordSetProps) => {
             setUseSeventh((prevList) => {
                 const newList = [...prevList]
                 newList[i] = !newList[i]
-                console.log(newList)
                 return newList
             })
         }
@@ -42,8 +43,8 @@ export const Chords = (props: ChordSetProps) => {
 
     return (
         <Container
-            x={WIDTH / 2}
-            y={HEIGHT / 2}
+            x={width / 2}
+            y={width / 2}
             anchor={0.5}
         >
             {chordList.map((c, i) =>
@@ -62,7 +63,7 @@ export const Chords = (props: ChordSetProps) => {
     )
 }
 
-const RADIUS = 200
+const RADIUS = 150
 
 type ChordProps = {
     chord: ChordSymbol
@@ -76,16 +77,18 @@ type ChordProps = {
 type GraphicsArg = Parameters<NonNullable<React.ComponentProps<typeof Graphics>["draw"]>>[0]
 export const Chord = ({ chord, useSeventh, setChord, setSeventh, index, totalChords }: ChordProps) => {
     // const progressThrough = index / totalChords
-    const ellipsisRatio = Math.min(WIDTH, HEIGHT) / Math.max(WIDTH, HEIGHT)
-    const xRatio = WIDTH > HEIGHT ? 1 : ellipsisRatio
-    const yRatio = WIDTH < HEIGHT ? 1 : ellipsisRatio
+    const width = useCanvasWidth()
+    const radius = RADIUS * (width / 500)
+    const ellipsisRatio = Math.min(width, width) / Math.max(width, width)
+    const xRatio = width > width ? 1 : ellipsisRatio
+    const yRatio = width < width ? 1 : ellipsisRatio
 
     const halfAngle = (1 / totalChords) * Math.PI
     const startOffset = Math.PI / 4
     const startAngle = ((index / totalChords) * Math.PI * 2) - halfAngle - startOffset
     const endAngle = (((index + 1) / totalChords) * Math.PI * 2) - halfAngle - startOffset
     const centerPoint = new Point(0, 0)
-    const chordArc = new Arc(centerPoint, RADIUS, startAngle, endAngle)
+    const chordArc = new Arc(centerPoint, radius, startAngle, endAngle)
     const { x, y } = chordArc.middle()
     const a = x * xRatio
     const b = y * yRatio
@@ -103,14 +106,14 @@ export const Chord = ({ chord, useSeventh, setChord, setSeventh, index, totalCho
         g.clear()
         g.lineStyle(1, "white")
         g.alpha = .7
-        g.arc(0, 0, RADIUS / 2, startAngle, endAngle)
+        g.arc(0, 0, radius / 2, startAngle, endAngle)
 
         g.beginFill(`hsl(${hue}deg 90% 60%)`)
 
-        g.arc(0, 0, RADIUS + 50, endAngle, startAngle, true)
-        g.arc(0, 0, RADIUS / 2, startAngle, endAngle)
+        g.arc(0, 0, radius + 50, endAngle, startAngle, true)
+        g.arc(0, 0, radius / 2, startAngle, endAngle)
         g.endFill()
-    }, [chord, index, totalChords])
+    }, [chord, index, radius, totalChords])
 
     const [hoverLeft, setHoverLeft] = useState(false)
     const [hoverRight, setHoverRight] = useState(false)
