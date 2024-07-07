@@ -24,7 +24,7 @@ export const DrumStep = (props: DrumStepProps) => {
 
 
     return (
-        <div>
+        <div className="step">
             <h2 style={{ margin: 0 }}>
                 ✨Help the Octopus Make A New Song✨
             </h2>

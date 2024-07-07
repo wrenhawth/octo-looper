@@ -16,8 +16,8 @@ export const ChordPatternSelector = (props: Props) => {
         return <SlIcon key={`${selectedPattern}-${i}`} name={c === 'x' ? "music-note" : "circle"}></SlIcon>
     })
     return <div className="rhythm-preset-select">
-        <h3 style={{ marginBottom: 0 }}>❔↓ Mix It Up ↓❔</h3>
-        <SlButton onClick={() => {
+        {/* <h3 style={{ marginBottom: 0 }}>❔↓ Mix It Up ↓❔</h3> */}
+        <SlButton size="small" onClick={() => {
             setSelectedPattern((prevPattern) => {
                 const prevIndex = CHORD_PATTERNS_LIST.indexOf(prevPattern)
                 const nextIndex = prevIndex + 1 < CHORD_PATTERNS_LIST.length ? prevIndex + 1 : 0

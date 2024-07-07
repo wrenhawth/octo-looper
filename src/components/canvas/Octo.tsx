@@ -23,15 +23,16 @@ export const Octo = () => {
             zIndex={ZINDEX.OCTOPUS}
             >
             <Text
-                text="⬆"
+                text="▲"
                 // y={HEIGHT / 2 - 50}
-                y={-75}
+                y={-50}
                 anchor={0.5}
                 eventMode='static'
                 style={{
-                    fontSize: 48,
+                    fontSize: 32,
                     stroke: '#ffffff',
-                    fill: ['#ffffff', '#eeeeee']
+                    fill: '#ffffff',
+                    // fill: ['#ffffff', '#eeeeee']
                 } as ComponentProps<typeof Text>['style']}
             />
             <Text

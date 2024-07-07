@@ -29,6 +29,22 @@ export const CHORD_TO_EMOJI_SIZE = {
   V: 14,
   vi: 12,
 };
+export const CHORD_TO_HUE = {
+    I: 300,
+    ii: 265,
+    iii: 230,
+    IV: 195,
+    V: 160,
+    vi: 125,
+  };
+// export const CHORD_TO_HUE = {
+//   I: 300,
+//   ii: 257,
+//   iii: 214,
+//   IV: 171,
+//   V: 129,
+//   vi: 86,
+// };
 
 export const CHORD_TO_MOOD_IMAGE = {
   I: "😊",

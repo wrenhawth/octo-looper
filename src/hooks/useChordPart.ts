@@ -1,8 +1,8 @@
-import { Part, PolySynth } from "tone"
-import { ChordEvent, ChordPattern, fillChordPattern } from "../utils/chordPatterns"
+import { getTransport, Part, PolySynth } from "tone"
+import { ArpPattern, ChordEvent, ChordPattern, fillChordPattern } from "../utils/chordPatterns"
 import { CHORD_TO_INDEX, ChordSymbol, INITIAL_CHORD_LIST } from "../utils/basicChords"
 import React from "react"
-import { DEFAULT_SCALE_OPTIONS, scaleToTriads } from "../utils/chords"
+import { DEFAULT_SCALE_OPTIONS, scaleToSevenths, scaleToTriads } from "../utils/chords"
 import _ from "lodash"
 
 type ChordPart = Part<ChordEvent>
@@ -12,11 +12,13 @@ type ChordParts = Array<{
 }>
 
 
-const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, chordPattern: ChordPattern) => {
+const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, chordPattern: ChordPattern, arpPattern: ArpPattern | false, useSeventh: boolean) => {
     part.clear()
     const triads = scaleToTriads(DEFAULT_SCALE_OPTIONS)
-    const chord = triads[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4']
-    const newValue = fillChordPattern(i, chord, chordPattern)
+    const seventhChords = scaleToSevenths(DEFAULT_SCALE_OPTIONS)
+    const chord = useSeventh ? seventhChords[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4'] : triads[CHORD_TO_INDEX[chordNumeral]]?.notes || ['C4']
+    console.log(arpPattern)
+    const newValue = fillChordPattern(i, chord, chordPattern, arpPattern || undefined)
     newValue.forEach((v) => {
         part.at(v.time, v)
     })
@@ -24,14 +26,16 @@ const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, 
 
 type ChordPartOptions = {
     chordList: ChordSymbol[]
+    useSeventh: boolean[]
     chordPattern: ChordPattern
+    arpPattern: ArpPattern | false
     chordSynth: React.MutableRefObject<PolySynth | null>
     isStarted: boolean
     playChords: boolean
 }
 
 export const useChordPart = (options: ChordPartOptions) => {
-    const { chordList, chordPattern, chordSynth, isStarted, playChords } = options
+    const { chordList, chordPattern, arpPattern, chordSynth, isStarted, playChords, useSeventh } = options
     const chordPartRefs = React.useRef<ChordParts | null>(null)
 
 
@@ -71,12 +75,49 @@ export const useChordPart = (options: ChordPartOptions) => {
 
 
     React.useEffect(() => {
+        const l = chordList.length
+        const transport = getTransport()
+        transport.loopEnd = `${l}m`
+        chordPartRefs.current?.forEach(({ part }, i) => {
+            part.loopEnd = `${l}m`
+            if (i >= l) {
+                part.clear()
+            }
+        })
+    }, [chordList.length])
+
+    React.useEffect(() => {
+        const l = chordList.length
         chordList.forEach((c, i) => {
-            if (chordPartRefs.current) { // && chordPartRefs.current[i].chord !== c) {
-                updateChordPart(chordPartRefs.current[i].part, i, c, chordPattern)
+            if (chordPartRefs.current) {
+                if (chordPartRefs.current[i] == undefined) {
+                    const initialTriads = scaleToTriads(DEFAULT_SCALE_OPTIONS)
+
+                    const initialChord = initialTriads[CHORD_TO_INDEX[c]]?.notes || ['C5']
+
+                    const initialPartValue = fillChordPattern(i, initialChord, 'DDDD')
+                    const part = new Part((time, value) => {
+                        chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], '8n', time, value.velocity)
+                    },
+                        initialPartValue
+                    ).start(0)
+
+                    part.loop = true
+                    part.humanize = true
+                    part.loopStart = '0:0'
+                    part.loopEnd = `${l}m`
+                    chordPartRefs.current[i] = ({
+                        part,
+                        chord: c
+                    })
+                    part.start(0)
+                    console.log(part)
+                }
+
+                updateChordPart(chordPartRefs.current[i].part, i, c, chordPattern, arpPattern, useSeventh[i])
                 chordPartRefs.current[i].chord = c
                 return
             }
         })
-    }, [chordList, chordPattern])
+    }, [chordSynth, chordList, chordPattern, arpPattern, useSeventh])
 }

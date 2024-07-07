@@ -12,7 +12,7 @@ import { useDrumPart } from "../hooks/useDrumPart"
 import { useDrumSampler } from '../hooks/useDrumSampler';
 import { useChordSynth } from "../hooks/useChordSynth"
 import { ChordSymbol, INITIAL_CHORD_LIST } from "../utils/basicChords"
-import { ChordPattern } from "../utils/chordPatterns"
+import { ArpPattern, ChordPattern } from "../utils/chordPatterns"
 import { useChordPart } from "../hooks/useChordPart"
 import { ChordStep } from "./ChordStep"
 import { NewSongStep } from "./NewSongStep"
@@ -36,9 +36,10 @@ export const AllSteps = () => {
 
     const chordSynth = useChordSynth(isStarted)
     const [chordList, setChordList] = React.useState<ChordSymbol[]>(INITIAL_CHORD_LIST)
+    const [useSeventh, setUseSeventh] = React.useState<boolean[]>(Array.from({length: INITIAL_CHORD_LIST.length}, () => false))
     const [chordPattern, setChordPattern] = React.useState<ChordPattern>('DDDD')
-
-    useChordPart({ chordList, chordPattern, chordSynth, isStarted, playChords: areChordsEnabled })
+    const [arpPattern, setArpPattern] = React.useState<ArpPattern | false>(false)
+    useChordPart({ chordList, chordPattern, arpPattern, chordSynth, isStarted, playChords: areChordsEnabled, useSeventh })
 
     return (
         <>
@@ -62,6 +63,10 @@ export const AllSteps = () => {
                             setChordList={setChordList}
                             chordPattern={chordPattern}
                             setChordPattern={setChordPattern}
+                            arpPattern={arpPattern}
+                            setArpPattern={setArpPattern}
+                            useSeventh={useSeventh}
+                            setUseSeventh={setUseSeventh}
                         />
                     }
                 </main>

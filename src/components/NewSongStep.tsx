@@ -14,7 +14,7 @@ import { getContext, getTransport } from "tone";
 export const NewSongStep = () => {
     const dispatch = useContext(WorkflowDispatchContext)
 
-    return <div>
+    return <div className="step">
         <h2 style={{ margin: 0 }}>
             ✨Help the Octopus Make A New Song✨
         </h2>

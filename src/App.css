@@ -3,8 +3,8 @@
 #root {
   max-width: 1280px;
   width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
+  /* margin: 0 auto;
+  padding: 2rem; */
   text-align: center;
   background-color: indigo;
 }
@@ -108,6 +108,16 @@ sl-button:hover>sl-icon {
   text-align: center;
 }
 
+.hint {
+  background-color: hsla(220, 100%, 30%, .8);
+  border-radius: 25%;
+  padding: 8px;
+  margin: 8px;
+
+  p {
+    margin: 2px;
+  }
+}
 /* .form-control__label {
   color: white;
 }
@@ -121,8 +131,16 @@ sl-select::part(base) {
   color: white
 }
 
+.step {
+  background-color: hsla(220, 100%, 30%, .8);
+  border-radius: 10%;
+  padding: 8px;
+  margin: 8px;
+}
+
 .main {
-  background-color: hsla(220, 100%, 30%, .9);
+  background-image: url(assets/freepik_ocean_background.jpg);
+  background-size: cover;
   /* max-height: 100vh; */
   min-height: 400px;
   min-width: 100%;
@@ -258,8 +276,10 @@ sl-tab[active]::part(base) {
 
 .beat-select {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* width: 100%; */
+  flex: auto auto;
   flex-direction: row;
   padding: 16px;
   align-items: center;

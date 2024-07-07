@@ -3,17 +3,20 @@ import { HEIGHT, WIDTH } from "./constants"
 import { ComponentProps, useCallback, useState } from "react"
 
 import '@pixi/events'
-import { CHORD_TO_EMOJI, CHORD_TO_EMOJI_SIZE, CHORD_TO_MOOD_IMAGE, ChordSymbol, MOVE_CHORD_LEFT, MOVE_CHORD_MOOD, MOVE_CHORD_RIGHT } from "../../utils/basicChords"
+import { CHORD_TO_EMOJI, CHORD_TO_EMOJI_SIZE, CHORD_TO_HUE, CHORD_TO_MOOD_IMAGE, ChordSymbol, MOVE_CHORD_LEFT, MOVE_CHORD_MOOD, MOVE_CHORD_RIGHT } from "../../utils/basicChords"
 import { Arc, Point } from "@flatten-js/core"
 import { TextStyle } from "pixi.js"
 
 type ChordSetProps = {
     chordList: ChordSymbol[]
     setChordList: React.Dispatch<React.SetStateAction<ChordSymbol[]>>
+
+    useSeventh: boolean[]
+    setUseSeventh: React.Dispatch<React.SetStateAction<boolean[]>>
 }
 
 export const Chords = (props: ChordSetProps) => {
-    const { chordList, setChordList } = props
+    const { chordList, setChordList, useSeventh, setUseSeventh } = props
     const totalChords = chordList.length
 
     const getUpdateChordInListFunction = (i: number) => {
@@ -25,6 +28,18 @@ export const Chords = (props: ChordSetProps) => {
             })
         }
     }
+
+    const getUpdateSeventhInListFunction = (i: number) => {
+        return () => {
+            setUseSeventh((prevList) => {
+                const newList = [...prevList]
+                newList[i] = !newList[i]
+                console.log(newList)
+                return newList
+            })
+        }
+    }
+
     return (
         <Container
             x={WIDTH / 2}
@@ -36,8 +51,10 @@ export const Chords = (props: ChordSetProps) => {
                     index={i}
                     key={`${c}-${i}`}
                     chord={c}
+                    useSeventh={useSeventh[i]}
                     totalChords={totalChords}
                     setChord={getUpdateChordInListFunction(i)}
+                    setSeventh={getUpdateSeventhInListFunction(i)}
                 />
             )}
             {/* {_.times(totalChords, (i) => <Chord index={i} key={i} totalChords={totalChords} />)} */}
@@ -47,16 +64,17 @@ export const Chords = (props: ChordSetProps) => {
 
 const RADIUS = 200
 
-
 type ChordProps = {
     chord: ChordSymbol
+    useSeventh: boolean
     setChord: (c: ChordSymbol) => void;
+    setSeventh: () => void;
     index: number
     totalChords: number
 }
 
 type GraphicsArg = Parameters<NonNullable<React.ComponentProps<typeof Graphics>["draw"]>>[0]
-export const Chord = ({ chord, setChord, index, totalChords }: ChordProps) => {
+export const Chord = ({ chord, useSeventh, setChord, setSeventh, index, totalChords }: ChordProps) => {
     // const progressThrough = index / totalChords
     const ellipsisRatio = Math.min(WIDTH, HEIGHT) / Math.max(WIDTH, HEIGHT)
     const xRatio = WIDTH > HEIGHT ? 1 : ellipsisRatio
@@ -75,6 +93,7 @@ export const Chord = ({ chord, setChord, index, totalChords }: ChordProps) => {
     // const b = Math.cos(Math.PI * progressThrough * 2) * (RADIUS * -1 * yRatio)
 
     const draw = useCallback((g: GraphicsArg) => {
+        const hue = CHORD_TO_HUE[chord]
         const halfAngle = (1 / totalChords) * Math.PI
         const startOffset = Math.PI / 4
         const startAngle = ((index / totalChords) * Math.PI * 2) - halfAngle - startOffset
@@ -83,15 +102,15 @@ export const Chord = ({ chord, setChord, index, totalChords }: ChordProps) => {
         // console.log(`Start: ${startAngle}, End: ${endAngle}`)
         g.clear()
         g.lineStyle(1, "white")
-        g.alpha = .5
+        g.alpha = .7
         g.arc(0, 0, RADIUS / 2, startAngle, endAngle)
 
-        // g.beginFill(['green', 'yellow', 'red', 'blue'][index])
+        g.beginFill(`hsl(${hue}deg 90% 60%)`)
 
         g.arc(0, 0, RADIUS + 50, endAngle, startAngle, true)
         g.arc(0, 0, RADIUS / 2, startAngle, endAngle)
         g.endFill()
-    }, [index, totalChords])
+    }, [chord, index, totalChords])
 
     const [hoverLeft, setHoverLeft] = useState(false)
     const [hoverRight, setHoverRight] = useState(false)
@@ -124,7 +143,7 @@ export const Chord = ({ chord, setChord, index, totalChords }: ChordProps) => {
             >
 
 
-                <Text
+                {/* <Text
                     text={chord}
                     x={0}
                     y={-50}
@@ -139,15 +158,16 @@ export const Chord = ({ chord, setChord, index, totalChords }: ChordProps) => {
                         stroke: '#ffffff',
                         fill: ['#ffffff', '#eeeeee']
                     } as ComponentProps<typeof Text>['style']}
-                />
+                /> */}
                 <Text
                     text={CHORD_TO_EMOJI[chord]}
                     x={0}
                     y={0}
                     anchor={0.5}
+                    angle={useSeventh ? 15 : 0}
                     eventMode='static'
                     pointerdown={() => {
-                        console.log(index)
+                        setSeventh()
                     }}
 
                     style={{

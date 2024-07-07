@@ -32,6 +32,33 @@ const findChordThatStartsWithNote = (chordList: string[], note: string): string 
     return null
 }
 
+export const scaleToSevenths = (scaleOptions?: Partial<Scale>) => {
+    const scale = {
+        ...DEFAULT_SCALE_OPTIONS,
+        ...scaleOptions
+    }
+    const scaleName = toScaleName(scale)
+    const triadNames = getSeventhsForKey(scale)
+    const scaleNotes = Scale.rangeOf(scaleName)(`${scale.tonic}${scale.octave}`, `${scale.tonic}${scale.octave + 1}`)
+    const chordMap = scaleNotes.map(
+        (note) => {
+            if (note !== undefined) {
+                const chordName = findChordThatStartsWithNote(triadNames, note)
+                if (chordName != null) {
+                    const notes = Chord.notes(chordName, note)
+                    return {
+                        chordName,
+                        tonicNote: note,
+                        notes
+                    }
+                }
+            }
+        },
+        new Map<string, ChordWithOctaves>()
+    )
+    return chordMap
+}
+
 export const scaleToTriads = (scaleOptions?: Partial<Scale>) => {
     const scale = {
         ...DEFAULT_SCALE_OPTIONS,
@@ -67,4 +94,9 @@ const toScaleName = (scale: Scale) => {
 export const getTriadsForKey = (scale: Scale) => {
     const { mode, tonic } = scale
     return Mode.triads(mode, tonic)
+}
+
+export const getSeventhsForKey = (scale: Scale) => {
+    const { mode, tonic } = scale
+    return Mode.seventhChords(mode, tonic)
 }
