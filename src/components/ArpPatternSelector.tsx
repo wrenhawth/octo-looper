@@ -6,11 +6,12 @@ import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index.js"
 import { ARP_PATTERN_LABELS, ARP_PATTERNS_LIST, ArpPattern } from "../utils/chordPatterns";
 
 type Props = {
-    selectedArp: ArpPattern | false
-    setSelectedArp: React.Dispatch<React.SetStateAction<ArpPattern | false>>
+    selectedArp: ArpPattern
+    setSelectedArp: React.Dispatch<React.SetStateAction<ArpPattern>>
 }
 
 const PATTERN_TO_ICON = {
+    'none': 'list-stars',
     'up': 'arrow-up',
     'downUp': 'arrow-down-up',
     'alternateDown': 'arrow-down',
@@ -31,7 +32,7 @@ export const ArpPatternSelector = (props: Props) => {
                 return ARP_PATTERNS_LIST[nextIndex]
             })
         }}>
-            <SlIcon name={iconName} style={{ fontSize: 24, paddingRight: 8 }}></SlIcon>{selectedArp ? ARP_PATTERN_LABELS[selectedArp] : ""}
+            <SlIcon name={iconName} style={{ fontSize: 24, paddingRight: 8 }}></SlIcon>{ ARP_PATTERN_LABELS[selectedArp]}
         </SlButton>
 
     </div>

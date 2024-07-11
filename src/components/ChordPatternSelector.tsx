@@ -24,7 +24,8 @@ export const ChordPatternSelector = (props: Props) => {
                 return CHORD_PATTERNS_LIST[nextIndex]
             })
         }}>
-            <SlIcon name="shuffle" style={{ fontSize: 24, paddingRight: 8 }}></SlIcon>{iconList}
+            {iconList.length > 1 && iconList}
+            {iconList.length === 1 && <span>🐇</span>}
         </SlButton>
 
     </div>

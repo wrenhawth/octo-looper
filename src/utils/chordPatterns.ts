@@ -3,6 +3,7 @@ import { PatternGenerator, PatternName } from "tone/build/esm/event/PatternGener
 
 export type ChordEvent = {
     time: string,
+    duration: string,
     notes: string[],
     velocity: number
 }
@@ -15,14 +16,15 @@ export const fillChordPattern = (
     bar: number,
     chord: string[],
     chordPattern: ChordPattern,
-    patternName?: PatternName
+    patternName: PatternName | 'none' = 'none'
 ): ChordEvent[] => {
     const timeEvents = CHORD_PATTERNS[chordPattern]
+    const duration = chordPattern === 'SIXTEENTH_NOTES' ? '32n' : '8n'
     const patternTimes = [...timeEvents]
     const filledPattern: ChordEvent[] = []
 
     let currentTime = patternTimes.shift()
-    const generator = patternName ? PatternGenerator(chord.length, patternName) : null
+    const generator = patternName !== 'none' ? PatternGenerator(chord.length, patternName) : null
     for (let q = 0; q < 4; q += 1) {
         for (let s = 0; s < 4; s += 1) {
 
@@ -31,6 +33,7 @@ export const fillChordPattern = (
 
                 filledPattern.push({
                     time: `${bar}:${q}:${s}`,
+                    duration,
                     notes,
                     velocity: .7
                 })
@@ -38,6 +41,7 @@ export const fillChordPattern = (
             } else {
                 filledPattern.push({
                     time: `${bar}:${q}:${s}`,
+                    duration,
                     notes: [],
                     velocity: 0
                 })
@@ -48,20 +52,27 @@ export const fillChordPattern = (
 
 }
 
-export type ChordPattern = 'DDDD' | 'DDUUDU' | 'DDDDU' | 'DUDUDUDU'
+export type ChordPattern =
+    // 'DDDD' |
+    'DDUUDU' |
+    // 'DDDDU' |
+    'DUDUDUDU' |
+    'SIXTEENTH_NOTES'
 
 export const CHORD_PATTERNS_LIST = [
-    'DDDD',
+    // 'DDDD',
     'DDUUDU',
-    'DDDDU',
+    // 'DDDDU',
     'DUDUDUDU',
+    'SIXTEENTH_NOTES'
 ] as const
 
 export const CHORD_PATTERN_LABELS = {
-    DDDD: 'xoxoxoxo',
+    // DDDD: 'xoxoxoxo',
     DDUUDU: 'xoxxoxxx',
     DDDDU: 'xoxoxoxx',
-    DUDUDUDU: 'xxxxxxxx'
+    DUDUDUDU: 'xxxxxxxx',
+    SIXTEENTH_NOTES: '🐇'
 }
 
 const DDDD = [
@@ -80,13 +91,13 @@ const DDUUDU = [
     '0:3:2'
 ]
 
-const DDDDU = [
-    '0:0',
-    '0:1',
-    '0:2',
-    '0:3',
-    '0:3:2',
-]
+// const DDDDU = [
+//     '0:0',
+//     '0:1',
+//     '0:2',
+//     '0:3',
+//     '0:3:2',
+// ]
 
 const DUDUDUDU = [
     '0:0',
@@ -99,35 +110,55 @@ const DUDUDUDU = [
     '0:3:2'
 ]
 
+const SIXTEENTH_NOTES = [
+    '0:0',
+    '0:0:1',
+    '0:0:2',
+    '0:0:3',
+    '0:1',
+    '0:1:1',
+    '0:1:2',
+    '0:1:3',
+    '0:2:0',
+    '0:2:1',
+    '0:2:2',
+    '0:2:3',
+    '0:3:0',
+    '0:3:1',
+    '0:3:2',
+    '0:3:3',
+]
+
 export const CHORD_PATTERNS = {
     DDDD,
     DDUUDU,
-    DDDDU,
-    DUDUDUDU
+    // DDDDU,
+    DUDUDUDU,
+    SIXTEENTH_NOTES
 }
 
 export const ARP_PATTERNS_LIST = [
-    false,
+    "none",
     "up",
     "downUp",
-    "alternateDown",
+    // "alternateDown",
     "random",
     "randomWalk"
 ] as const
 
 export const ARP_PATTERN_LABELS = {
-    false: '',
-    "up": 'Up',
-    "downUp": "Down & Up",
-    "alternateDown": 'Down',
-    "random": 'Random',
+    "none": 'All At Once',
+    "up": 'Going Up',
+    "downUp": "Going Down & Up",
+    // "alternateDown": 'Down',
+    "random": 'Randomly',
     "randomWalk": 'Walk Around'
 }
 
 export type ArpPattern =
-    false |
+    "none" |
     "up" |
     "downUp" |
-    "alternateDown" |
+    // "alternateDown" |
     "random" |
     "randomWalk"

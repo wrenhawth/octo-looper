@@ -12,7 +12,7 @@ type ChordParts = Array<{
 }>
 
 
-const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, chordPattern: ChordPattern, arpPattern: ArpPattern | false, useSeventh: boolean) => {
+const updateChordPart = (part: ChordPart, i: number, chordNumeral: ChordSymbol, chordPattern: ChordPattern, arpPattern: ArpPattern, useSeventh: boolean) => {
     part.clear()
     const triads = scaleToTriads(DEFAULT_SCALE_OPTIONS)
     const seventhChords = scaleToSevenths(DEFAULT_SCALE_OPTIONS)
@@ -29,7 +29,7 @@ type ChordPartOptions = {
     chordList: ChordSymbol[]
     useSeventh: boolean[]
     chordPattern: ChordPattern
-    arpPattern: ArpPattern | false
+    arpPattern: ArpPattern
     chordSynth: React.MutableRefObject<PolySynth | null>
     isStarted: boolean
     playChords: boolean
@@ -53,10 +53,10 @@ export const useChordPart = (options: ChordPartOptions) => {
 
                     const initialChord = initialTriads[CHORD_TO_INDEX[initialRomanNumeral]]?.notes || ['C5']
 
-                    const initialPartValue = fillChordPattern(i, initialChord, 'DDDD')
+                    const initialPartValue = fillChordPattern(i, initialChord, 'DDUUDU')
 
                     const part = new Part((time, value) => {
-                        chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], '8n', time, value.velocity)
+                        chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], value.duration || '8n', time, value.velocity)
                     },
                         initialPartValue
                     ).start(0)
@@ -96,9 +96,9 @@ export const useChordPart = (options: ChordPartOptions) => {
 
                     const initialChord = initialTriads[CHORD_TO_INDEX[c]]?.notes || ['C5']
 
-                    const initialPartValue = fillChordPattern(i, initialChord, 'DDDD')
+                    const initialPartValue = fillChordPattern(i, initialChord, 'DDUUDU')
                     const part = new Part((time, value) => {
-                        chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], '8n', time, value.velocity)
+                        chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], value.duration || '8n', time, value.velocity)
                     },
                         initialPartValue
                     ).start(0)

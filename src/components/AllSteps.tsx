@@ -10,7 +10,7 @@ import { DrumStep } from "./DrumStep"
 import { DRUM_PRESETS, DrumPreset } from "../utils/drumPresets"
 import { useDrumPart } from "../hooks/useDrumPart"
 import { useDrumSampler } from '../hooks/useDrumSampler';
-import { useChordSynth } from "../hooks/useChordSynth"
+import { ChordSynthPreset, useChordSynth } from "../hooks/useChordSynth"
 import { ChordSymbol, INITIAL_CHORD_LIST } from "../utils/basicChords"
 import { ArpPattern, ChordPattern } from "../utils/chordPatterns"
 import { useChordPart } from "../hooks/useChordPart"
@@ -33,11 +33,13 @@ export const AllSteps = () => {
 
     useDrumPart({ drumPreset, drumSampler, isStarted })
 
-    const chordSynth = useChordSynth(isStarted)
+    const [chordPreset, setChordPreset] = React.useState<ChordSynthPreset>(ChordSynthPreset.DEFAULT);
+
+    const chordSynth = useChordSynth(isStarted, chordPreset)
     const [chordList, setChordList] = React.useState<ChordSymbol[]>(INITIAL_CHORD_LIST)
-    const [useSeventh, setUseSeventh] = React.useState<boolean[]>(Array.from({length: INITIAL_CHORD_LIST.length}, () => false))
-    const [chordPattern, setChordPattern] = React.useState<ChordPattern>('DDDD')
-    const [arpPattern, setArpPattern] = React.useState<ArpPattern | false>(false)
+    const [useSeventh, setUseSeventh] = React.useState<boolean[]>(Array.from({ length: INITIAL_CHORD_LIST.length }, () => false))
+    const [chordPattern, setChordPattern] = React.useState<ChordPattern>('DDUUDU')
+    const [arpPattern, setArpPattern] = React.useState<ArpPattern>('none')
     useChordPart({ chordList, chordPattern, arpPattern, chordSynth, isStarted, playChords: areChordsEnabled, useSeventh })
 
     return (
@@ -69,6 +71,12 @@ export const AllSteps = () => {
                         />
                     }
                 </main>
+                <p>
+
+                    <span onClick={() => setChordPreset(ChordSynthPreset.DEFAULT)}>🖥️</span>
+                    <span onClick={() => setChordPreset(ChordSynthPreset.PIANO)}>🎹</span>
+                    <span onClick={() => setChordPreset(ChordSynthPreset.KALIMBA)}>🔔</span>
+                </p>
                 <SlTabGroup
                     className="top-tabs"
                     noScrollControls
