@@ -108,6 +108,10 @@ sl-button:hover>sl-icon {
   text-align: center;
 }
 
+.emphasize {
+  text-decoration: underline;
+}
+
 .hint {
   background-color: hsla(220, 100%, 30%, .8);
   border-radius: 25%;
@@ -117,6 +121,13 @@ sl-button:hover>sl-icon {
   p {
     margin: 2px;
   }
+}
+
+.hint-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style-type: "⭐️";
 }
 /* .form-control__label {
   color: white;

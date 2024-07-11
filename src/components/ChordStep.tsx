@@ -22,18 +22,17 @@ export const ChordStep = ({ chordList, setChordList, chordPattern, setChordPatte
     return (
         <div>
             <h3 className="step-header"><span className="step-num">Step 3</span>: Chords</h3>
-            <div className="hint">
-
-                <p>
-                    Chords are sets of notes played together
-                </p>
-                <p>
-                    Different types have different feelings
-                </p>
-                <p>
-                    Try the arrows
-                </p>
-            </div>
+            <ul className="hint hint-list">
+                <li>
+                    Chords are <em className="emphasize">sets of notes</em> played together
+                </li>
+                <li>
+                    Each part of the circle can be a different chord
+                </li>
+                <li>
+                    They all have different moods, try the arrows
+                </li>
+            </ul>
 
 
             <OctoStage

@@ -71,12 +71,11 @@ export const AllSteps = () => {
                         />
                     }
                 </main>
-                <p>
-
+                {step === WorkflowStep.CHORDS && <p>
                     <span onClick={() => setChordPreset(ChordSynthPreset.DEFAULT)}>🖥️</span>
                     <span onClick={() => setChordPreset(ChordSynthPreset.PIANO)}>🎹</span>
                     <span onClick={() => setChordPreset(ChordSynthPreset.KALIMBA)}>🔔</span>
-                </p>
+                </p>}
                 <SlTabGroup
                     className="top-tabs"
                     noScrollControls
