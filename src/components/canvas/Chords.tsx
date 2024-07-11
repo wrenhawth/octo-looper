@@ -63,7 +63,7 @@ export const Chords = (props: ChordSetProps) => {
     )
 }
 
-const RADIUS = 150
+const RADIUS = 175
 
 type ChordProps = {
     chord: ChordSymbol

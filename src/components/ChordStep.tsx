@@ -8,6 +8,7 @@ import { ChordPatternSelector } from "./ChordPatternSelector";
 import { ArpPatternSelector } from "./ArpPatternSelector";
 
 type ChordStepProps = {
+    title: string
     chordList: ChordSymbol[]
     setChordList: React.Dispatch<React.SetStateAction<ChordSymbol[]>>
     chordPattern: ChordPattern
@@ -18,10 +19,12 @@ type ChordStepProps = {
     setArpPattern: React.Dispatch<React.SetStateAction<ArpPattern>>
 }
 
-export const ChordStep = ({ chordList, setChordList, chordPattern, setChordPattern, arpPattern, setArpPattern, useSeventh, setUseSeventh }: ChordStepProps) => {
+export const ChordStep = ({ title, chordList, setChordList, chordPattern, setChordPattern, arpPattern, setArpPattern, useSeventh, setUseSeventh }: ChordStepProps) => {
     return (
         <div>
+
             <h3 className="step-header"><span className="step-num">Step 3</span>: Chords</h3>
+            <h4 className="title" style={{ margin: 0 }}>{title}</h4>
             <ul className="hint hint-list">
                 <li>
                     Chords are <em className="emphasize">sets of notes</em> played together
@@ -30,7 +33,7 @@ export const ChordStep = ({ chordList, setChordList, chordPattern, setChordPatte
                     Each part of the circle can be a different chord
                 </li>
                 <li>
-                    They all have different moods, try the arrows
+                    They all have different moods, <strong>try the arrows</strong> ⇠⇢
                 </li>
             </ul>
 

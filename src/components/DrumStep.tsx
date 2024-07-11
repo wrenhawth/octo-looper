@@ -14,11 +14,11 @@ type DrumStepProps = {
     setDrumPreset: React.Dispatch<React.SetStateAction<DrumPreset>>
     tempo: number,
     setTempo: React.Dispatch<React.SetStateAction<number>>
-
+    title: string,
 }
 
 export const DrumStep = (props: DrumStepProps) => {
-    const { drumPreset, setDrumPreset, tempo, setTempo } = props
+    const { drumPreset, setDrumPreset, title, tempo, setTempo } = props
 
     const dispatch = useContext(WorkflowDispatchContext)
 
@@ -28,8 +28,8 @@ export const DrumStep = (props: DrumStepProps) => {
             <h2 style={{ margin: 0 }}>
                 ✨Help the Octopus Make A New Song✨
             </h2>
-            <h2 className="octo" style={{ margin: 0 }}>🐙</h2>
             <h3 className="step-header"><span className="step-num">Step 2</span>: Rhythm</h3>
+            <h2 className="title" style={{ margin: 0 }}>{title}</h2>
             <div className="beat-select">
 
                 {/* <div style={{ display: 'flex' }}> */}
@@ -45,8 +45,8 @@ export const DrumStep = (props: DrumStepProps) => {
                             max={175}
                             value={tempo}
                             onSlChange={
-                                (event) => { 
-                                    setTempo((event.target as unknown as {value: number}).value ?? 100)
+                                (event) => {
+                                    setTempo((event.target as unknown as { value: number }).value ?? 100)
                                 }
                             }
                         >

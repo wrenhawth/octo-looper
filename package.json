@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@flatten-js/core": "^1.5.6",
     "@gsap/react": "^2.1.1",
     "@pixi/events": "^7.4.2",

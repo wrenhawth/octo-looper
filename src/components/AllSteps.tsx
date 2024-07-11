@@ -21,6 +21,7 @@ import { getTransport } from "tone";
 export const AllSteps = () => {
     const { isStarted, step, areDrumsEnabled, areChordsEnabled } = useContext(WorkflowContext)
     const dispatch = useContext(WorkflowDispatchContext)
+    const [title, setTitle] = React.useState('')
     const [tempo, setTempo] = React.useState<number>(120)
 
     useEffect(() => {
@@ -48,10 +49,11 @@ export const AllSteps = () => {
             <div>
                 <main className="main">
                     {step === WorkflowStep.NEW_SONG &&
-                        <NewSongStep />
+                        <NewSongStep title={title} persistTitle={setTitle} />
                     }
                     {step === WorkflowStep.DRUMS &&
                         <DrumStep
+                            title={title}
                             drumPreset={drumPreset}
                             setDrumPreset={setDrumPreset}
                             tempo={tempo}
@@ -60,6 +62,8 @@ export const AllSteps = () => {
                     }
                     {step === WorkflowStep.CHORDS &&
                         <ChordStep
+                            title={title}
+
                             chordList={chordList}
                             setChordList={setChordList}
                             chordPattern={chordPattern}
