@@ -66,19 +66,21 @@ export const NewSongStep = (props: NewSongProps) => {
         <SlButton
             variant="success"
             size="large"
-            disabled={title == ''}
             onClick={async () => {
-                if (title != '') {
+                if (title == '') {
+                    persistTitle(options[0])
+                } else {
                     persistTitle(title)
-                    dispatch?.({ type: "start" })
-                    dispatch?.({ type: "setStep", step: WorkflowStep.DRUMS })
-                    const transport = getTransport()
-                    transport.loop = true
-                    transport.loopStart = 0
-                    transport.loopEnd = '4m'
-                    transport.start("+0.1")
-                    await getContext().resume()
                 }
+                dispatch?.({ type: "start" })
+                dispatch?.({ type: "setStep", step: WorkflowStep.DRUMS })
+                const transport = getTransport()
+                transport.loop = true
+                transport.loopStart = 0
+                transport.loopEnd = '4m'
+                transport.start("+0.1")
+                await getContext().resume()
+
             }}
         >
             <SlIcon slot="prefix" name="plus-lg" style={{ fontWeight: 'bold' }} />
