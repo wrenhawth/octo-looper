@@ -5,7 +5,8 @@ const initialWorkflow: Workflow = {
     step: WorkflowStep.NEW_SONG,
     isStarted: false,
     areDrumsEnabled: false,
-    areChordsEnabled: false
+    areChordsEnabled: false,
+    isMelodyEnabled: false,
 }
 
 export const WorkflowContext = createContext(initialWorkflow);
@@ -17,10 +18,12 @@ function workflowReducer(workflow: Workflow, action: WorkflowAction) {
         case "setStep": {
             const areDrumsEnabled = action.step === WorkflowStep.DRUMS ? true : workflow.areDrumsEnabled
             const areChordsEnabled = action.step === WorkflowStep.CHORDS ? true : workflow.areChordsEnabled
+            const isMelodyEnabled = action.step === WorkflowStep.MELODY ? true : workflow.isMelodyEnabled
             return {
                 ...workflow,
                 areDrumsEnabled,
                 areChordsEnabled,
+                isMelodyEnabled,
                 step: action.step,
             }
         }
@@ -36,6 +39,7 @@ type Workflow = {
     isStarted: boolean
     areDrumsEnabled: boolean
     areChordsEnabled: boolean
+    isMelodyEnabled: boolean
 }
 
 type WorkflowAction = {

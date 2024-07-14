@@ -86,7 +86,7 @@ const parseArpPatternParam = (param: string | null) => {
 
 export const AllSteps = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const { isStarted, step, areDrumsEnabled, areChordsEnabled } = useContext(WorkflowContext)
+    const { isStarted, step, areDrumsEnabled, areChordsEnabled, isMelodyEnabled } = useContext(WorkflowContext)
     const dispatch = useContext(WorkflowDispatchContext)
     const [title, setTitle] = React.useState(urlParams.get('title') || '')
     const [tempo, setTempo] = React.useState<number>(Number.parseInt(urlParams.get('tempo') || `${DEFAULT_TEMPO}`) ?? DEFAULT_TEMPO)
@@ -179,6 +179,15 @@ export const AllSteps = () => {
                         onClick={() => areChordsEnabled && dispatch?.({ type: "setStep", step: WorkflowStep.CHORDS })}
 
                     >3: Chords
+                    </SlTab>
+                    <SlTab
+                        className="tab melody-tab"
+                        slot="nav"
+                        active={step === WorkflowStep.MELODY}
+                        disabled={!isMelodyEnabled}
+                        onClick={() => isMelodyEnabled && dispatch?.({ type: "setStep", step: WorkflowStep.MELODY })}
+
+                    >4: Sing
                     </SlTab>
                 </SlTabGroup>
             </div>

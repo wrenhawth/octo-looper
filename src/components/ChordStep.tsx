@@ -6,6 +6,9 @@ import { ArpPattern, ChordPattern } from "../utils/chordPatterns"
 import { OctoStage } from "./canvas/OctoStage"
 import { ChordPatternSelector } from "./ChordPatternSelector";
 import { ArpPatternSelector } from "./ArpPatternSelector";
+import { WorkflowDispatchContext } from "./WorkflowContext";
+import { useContext } from "react";
+import { WorkflowStep } from "../utils/workflow";
 
 type ChordStepProps = {
     title: string
@@ -20,10 +23,26 @@ type ChordStepProps = {
 }
 
 export const ChordStep = ({ title, chordList, setChordList, chordPattern, setChordPattern, arpPattern, setArpPattern, useSeventh, setUseSeventh }: ChordStepProps) => {
+    const dispatch = useContext(WorkflowDispatchContext)
+    
     return (
         <div>
-
-            <h3 className="step-header"><span className="step-num">Step 3</span>: Chords</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', alignItems: 'center', width: '80%', margin: 'auto'}}>
+                <SlButton 
+                size="small" 
+                style={{justifySelf: 'center'}}
+                 onClick={() => {
+                    dispatch?.({
+                        type: 'setStep',
+                        step: WorkflowStep.DRUMS
+                    })
+                 }}>
+                    <SlIcon name="rewind" slot="prefix"></SlIcon>🥁 Drums
+                </SlButton>
+                <h3 className="step-header">
+                    <span className="step-num">Step 3</span>: Chords
+                </h3>
+            </div>
             <div className="hint">
                 <ul className="hint-list">
                     <li>
@@ -41,7 +60,7 @@ export const ChordStep = ({ title, chordList, setChordList, chordPattern, setCho
                 </ul>
             </div>
 
-            <h4 className="title" style={{ margin: 0 }}>Song: {title}</h4>
+            <h4 className="title" style={{ margin: 0 }}>Song: <span className="emphasize">{title}</span></h4>
 
             <OctoStage
                 chordList={chordList}

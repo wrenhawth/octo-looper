@@ -101,7 +101,7 @@ sl-button:hover>sl-icon {
 .preset-select::part(form-control-label) {
   color: white;
   font-weight: bold;
-  font-size: 18px;
+  font-size: calc(10px + 2vmin);
 }
 
 .preset-select::part(display-input) {
@@ -305,6 +305,10 @@ sl-select::part(base) {
   background-color: var(--sl-color-emerald-500);
 }
 
+.melody-tab::part(base) {
+  background-color: var(--sl-color-teal-500);
+}
+
 sl-tab[active]::part(base) {
   font-weight: bolder;
   text-decoration: underline;
@@ -317,7 +321,7 @@ sl-tab[active]::part(base) {
   /* width: 100%; */
   flex: auto auto;
   flex-direction: row;
-  padding: 16px;
+  /* padding: 12px; */
   align-items: center;
 }
 
@@ -325,7 +329,7 @@ sl-tab[active]::part(base) {
   flex-direction: column;
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 12px;
 }
 
 .step-header {

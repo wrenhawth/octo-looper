@@ -11,12 +11,13 @@ type Props = {
 const PB = (props: Props) => {
     const { isPlaying, onClick } = props
 
-    return <div className="play-button">
-        <SlButton onClick={onClick} variant="default">
+    return (
+        <SlButton onClick={onClick} variant="default" size="large" style={{padding: 12}}>
             {isPlaying ? <SlIcon slot="prefix" name="pause-fill"></SlIcon> : <SlIcon slot="prefix" name="play-fill"></SlIcon>}
             {isPlaying ? `Pause` : `Play`}
         </SlButton>
-    </div>
+    )
+    // </div>
 
 }
 

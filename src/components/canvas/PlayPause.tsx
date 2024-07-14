@@ -52,7 +52,7 @@ export const PlayPause = () => {
                     }
                 }}
                 style={{
-                    fontSize: 32,
+                    fontSize: 48,
                     stroke: '#ffffff',
                     fill: iconFill,
                     // fill: iconFill,
