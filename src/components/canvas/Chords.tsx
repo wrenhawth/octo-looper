@@ -2,7 +2,7 @@ import { Container, Graphics, Text } from "@pixi/react"
 import { ComponentProps, useCallback, useState } from "react"
 
 import '@pixi/events'
-import { CHORD_TO_EMOJI, CHORD_TO_EMOJI_SIZE, CHORD_TO_HUE, CHORD_TO_MOOD_IMAGE, ChordSymbol, MOVE_CHORD_LEFT, MOVE_CHORD_MOOD, MOVE_CHORD_RIGHT } from "../../utils/basicChords"
+import { CHORD_TO_EMOJI, CHORD_TO_EMOJI_SIZE, CHORD_TO_HUE, CHORD_TO_LABEL, CHORD_TO_MOOD_IMAGE, ChordSymbol, MOVE_CHORD_LEFT, MOVE_CHORD_MOOD, MOVE_CHORD_RIGHT, SEVENTH_CHORD_TO_LABEL } from "../../utils/basicChords"
 import { Arc, Point } from "@flatten-js/core"
 import { TextStyle } from "pixi.js"
 import { useCanvasWidth } from "./utils"
@@ -89,31 +89,33 @@ export const Chord = ({ chord, useSeventh, setChord, setSeventh, index, totalCho
     const endAngle = (((index + 1) / totalChords) * Math.PI * 2) - halfAngle - startOffset
     const centerPoint = new Point(0, 0)
     const chordArc = new Arc(centerPoint, radius, startAngle, endAngle)
+    const chordLabelArc = new Arc(centerPoint, radius * .6, startAngle, endAngle)
+    const { x: labelX, y: labelY } = chordLabelArc.middle()
+
     const { x, y } = chordArc.middle()
     const a = x * xRatio
     const b = y * yRatio
     // const a = Math.sin(Math.PI * progressThrough * 2) * (RADIUS * xRatio)
     // const b = Math.cos(Math.PI * progressThrough * 2) * (RADIUS * -1 * yRatio)
-
+    const chordHue = CHORD_TO_HUE[chord]
     const draw = useCallback((g: GraphicsArg) => {
-        const hue = CHORD_TO_HUE[chord]
+        const hue = chordHue
         const halfAngle = (1 / totalChords) * Math.PI
         const startOffset = Math.PI / 4
         const startAngle = ((index / totalChords) * Math.PI * 2) - halfAngle - startOffset
         const endAngle = (((index + 1) / totalChords) * Math.PI * 2) - halfAngle - startOffset
 
-        // console.log(`Start: ${startAngle}, End: ${endAngle}`)
         g.clear()
         g.lineStyle(1, "white")
-        g.alpha = .7
+        g.alpha = .75
         g.arc(0, 0, radius / 2, startAngle, endAngle)
 
-        g.beginFill(`hsl(${hue}deg 90% 60%)`)
+        g.beginFill(`hsl(${hue}deg 90% 50%)`)
 
         g.arc(0, 0, radius + 50, endAngle, startAngle, true)
         g.arc(0, 0, radius / 2, startAngle, endAngle)
         g.endFill()
-    }, [chord, index, radius, totalChords])
+    }, [index, radius, totalChords, chordHue])
 
     const [hoverLeft, setHoverLeft] = useState(false)
     const [hoverRight, setHoverRight] = useState(false)
@@ -121,47 +123,47 @@ export const Chord = ({ chord, useSeventh, setChord, setSeventh, index, totalCho
 
 
     const shiftLeft = () => {
-        setChord(MOVE_CHORD_LEFT[chord as keyof typeof MOVE_CHORD_LEFT])
+        setChord(MOVE_CHORD_LEFT[chord])
     }
 
     const shiftRight = () => {
-        setChord(MOVE_CHORD_RIGHT[chord as keyof typeof MOVE_CHORD_RIGHT])
+        setChord(MOVE_CHORD_RIGHT[chord])
     }
-
-    // const isMajorChord = chord.toUpperCase() === chord
 
     const shiftMood = () => {
         setChord(MOVE_CHORD_MOOD[chord])
     }
 
     const emojiSize = CHORD_TO_EMOJI_SIZE[chord]
+
+    const chordLabel = useSeventh ? SEVENTH_CHORD_TO_LABEL[chord] : CHORD_TO_LABEL[chord]
+    const labelRotation = (startAngle + endAngle) / 2
+    const flippedLabelRotation = (labelRotation < 0 || labelRotation > Math.PI * .75) ? labelRotation + Math.PI / 2 : labelRotation - Math.PI / 2
+    const labelHue = chordHue > 180 ? chordHue - 120 : chordHue + 120
     return (
         <>
             <Graphics draw={draw} />
-
+            <Text
+                text={chordLabel}
+                // text={labelRotation.toFixed(5)}
+                x={labelX}
+                y={labelY}
+                anchor={0.5}
+                // rotation={labelRotation}
+                rotation={flippedLabelRotation}
+                style={{
+                    fontSize: 24,
+                    lineHeight: 32,
+                    stroke: '#ffffff',
+                    fill: `hsl(${labelHue}deg 90% 50%)`,
+                    fillGradientType: 1
+                } as ComponentProps<typeof Text>['style']}
+            />
             <Container
                 x={a}
                 y={b}
                 anchor={0.5}
             >
-
-
-                {/* <Text
-                    text={chord}
-                    x={0}
-                    y={-50}
-                    anchor={0.5}
-                    eventMode='static'
-                    pointerdown={() => {
-                        console.log(index)
-                    }}
-
-                    style={{
-                        fontSize: 42,
-                        stroke: '#ffffff',
-                        fill: ['#ffffff', '#eeeeee']
-                    } as ComponentProps<typeof Text>['style']}
-                /> */}
                 <Text
                     text={CHORD_TO_EMOJI[chord]}
                     x={0}

@@ -1,20 +1,25 @@
 import { faker } from "@faker-js/faker"
 import _ from "lodash"
+import { ADJECTIVE_LIST } from "./adjectives"
 
-const INCLUDED_TYPES = ['smiley', 'nature'] as const
-
+const INCLUDED_TYPES = ['smiley', 'nature', 'travel'] as const
 
 const FILTERED_EMOJIS = new Set([
     '💋',
     '🗨️',
     '😏',
     '😫',
+    '😩',
+    '🤢',
     '💮',
     '🤮',
     '🥵',
-    '💦'
-
+    '💦',
+    '🥴',
+    '😈',
+    '🏵️',
 ])
+
 const FILTERED_PREPOSITIONS = new Set([
     'abaft',
     'amid',
@@ -32,7 +37,8 @@ const FILTERED_PREPOSITIONS = new Set([
     'qua',
     'sans',
     'save',
-    'vice'
+    'vice',
+    'unto',
 ])
 
 const getEmoji = () => {
@@ -50,6 +56,11 @@ const getPreposition = () => {
     return prep
 }
 
+const getAdjective = () => {
+    const adjectiveIndex = _.random(0, ADJECTIVE_LIST.length)
+    return ADJECTIVE_LIST[adjectiveIndex]
+}
+
 const generatePrepTitle = () => {
     const emoji1 = getEmoji()
     const prep = getPreposition()
@@ -59,12 +70,12 @@ const generatePrepTitle = () => {
 
 const generateAdjectiveTitle = () => {
     const emoji1 = getEmoji()
-    const adjective = faker.word.adjective({length: { min: 1, max: 5}})
+    const adjective = getAdjective()
     return _.startCase(`${adjective} ${emoji1}`)
 }
 
 const generateEmojiTitle = () => {
-    const numberOfEmoji = faker.number.int({ min: 1, max: 3})
+    const numberOfEmoji = faker.number.int({ min: 1, max: 3 })
     return Array.from({ length: numberOfEmoji }).map(
         () => getEmoji()
     ).join('')

@@ -29,7 +29,7 @@ export const DrumStep = (props: DrumStepProps) => {
                 ✨Help the Octopus Make A New Song✨
             </h2>
             <h3 className="step-header"><span className="step-num">Step 2</span>: Rhythm</h3>
-            <h2 className="title" style={{ margin: 0 }}>{title}</h2>
+            <h2 className="title" style={{ margin: 0 }}>Song: {title}</h2>
             <div className="beat-select">
 
                 {/* <div style={{ display: 'flex' }}> */}

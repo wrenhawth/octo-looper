@@ -8,6 +8,11 @@ export enum ChordSynthPreset {
     KALIMBA = "kalimba"
 }
 
+export const CHORD_SYNTH_PRESETS = [
+    ChordSynthPreset.DEFAULT,
+    ChordSynthPreset.KALIMBA,
+]
+
 export const useChordSynth = (isStarted: boolean, preset: ChordSynthPreset) => {
     const chordSynth = React.useRef<PolySynth | null>(null)
     React.useEffect(() => {

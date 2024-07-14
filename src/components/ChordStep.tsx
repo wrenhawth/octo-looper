@@ -24,19 +24,24 @@ export const ChordStep = ({ title, chordList, setChordList, chordPattern, setCho
         <div>
 
             <h3 className="step-header"><span className="step-num">Step 3</span>: Chords</h3>
-            <h4 className="title" style={{ margin: 0 }}>{title}</h4>
-            <ul className="hint hint-list">
-                <li>
-                    Chords are <em className="emphasize">sets of notes</em> played together
-                </li>
-                <li>
-                    Each part of the circle can be a different chord
-                </li>
-                <li>
-                    They all have different moods, <strong>try the arrows</strong> ⇠⇢
-                </li>
-            </ul>
+            <div className="hint">
+                <ul className="hint-list">
+                    <li>
+                        Chords are <em className="emphasize">sets of notes</em> played together
+                    </li>
+                    <li>
+                        Each part of the circle can be a different chord
+                    </li>
+                    <li>
+                        Chords (🪸🐡🐠🐢🐬🪼) have different moods
+                    </li>
+                    <li><strong>Try the arrows ⇠⇢ and faces 😊🫨</strong>
+                        {/* <p>🪸🐡🐠🐢🐬🪼</p> */}
+                    </li>
+                </ul>
+            </div>
 
+            <h4 className="title" style={{ margin: 0 }}>Song: {title}</h4>
 
             <OctoStage
                 chordList={chordList}

@@ -6,6 +6,7 @@ import { Octo } from './Octo';
 import { Chords } from './Chords';
 import { ChordSymbol } from '../../utils/basicChords';
 import { useCanvasWidth } from './utils';
+import { PlayPause } from './PlayPause';
 
 type OctoStageProps = {
     chordList: ChordSymbol[]
@@ -27,6 +28,7 @@ export const OctoStage = ({ chordList, setChordList, useSeventh, setUseSeventh }
             <Container sortableChildren>
                 {/* <Container anchor={0.5} x={(WIDTH * scale) / 2} y={(HEIGHT * scale) / 2}> */}
                 <Octo />
+                <PlayPause />
                 <Chords chordList={chordList} setChordList={setChordList} useSeventh={useSeventh} setUseSeventh={setUseSeventh} />
                 {/* </Container> */}
 

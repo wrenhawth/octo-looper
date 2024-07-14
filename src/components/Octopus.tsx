@@ -38,25 +38,6 @@ export const Octopus = (props: Props) => {
         { scope: container, dependencies: [lengthOfLoop, isStarted] },
     );
 
-    // useEffect(() => {
-    //     if (isStarted) {
-    //         getTransport().scheduleRepeat((time) => {
-    //             getDraw().schedule(() => {
-    //                 const progress = ((Time(time).toSeconds()) / Time('4m').toSeconds())
-    //                 const progressPercentage = progress - Math.floor(progress)
-    //                 contextSafe(() => {
-    //                     console.log(tl.current?.getTweensOf('.octopus')[0])
-    //                     console.log(tl.current?.getChildren()[0])
-
-    //                     tl.current?.getChildren()[0].progress(progressPercentage)
-    //                 })
-    //             }, 1)
-    //         }, '16n')
-    //     }
-
-    //     // rotationLoop.current?.start(0)
-    // }, [contextSafe, isStarted])
-
 
     return (
         <div>

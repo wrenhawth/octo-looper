@@ -22,7 +22,7 @@ export const Octo = () => {
             anchor={0.5}
             angle={octoAngle}
             zIndex={ZINDEX.OCTOPUS}
-            >
+        >
             <Text
                 text="▲"
                 // y={HEIGHT / 2 - 50}
@@ -56,6 +56,7 @@ export const Octo = () => {
                     dropShadowColor: '#cccccc'
                 } as ComponentProps<typeof Text>['style']}
             />
+
         </Container>
     )
 

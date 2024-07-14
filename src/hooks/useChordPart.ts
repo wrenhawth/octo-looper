@@ -53,7 +53,7 @@ export const useChordPart = (options: ChordPartOptions) => {
 
                     const initialChord = initialTriads[CHORD_TO_INDEX[initialRomanNumeral]]?.notes || ['C5']
 
-                    const initialPartValue = fillChordPattern(i, initialChord, 'DDUUDU')
+                    const initialPartValue = fillChordPattern(i, initialChord, 'DDUUDU', arpPattern)
 
                     const part = new Part((time, value) => {
                         chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], value.duration || '8n', time, value.velocity)
@@ -72,7 +72,7 @@ export const useChordPart = (options: ChordPartOptions) => {
                 })
             }
         }
-    }, [chordSynth, playChords, isStarted])
+    }, [chordSynth, playChords, isStarted, arpPattern])
 
 
     React.useEffect(() => {

@@ -1,7 +1,7 @@
 @import '/node_modules/@shoelace-style/shoelace/dist/themes/light.css';
 
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   width: 100%;
   /* margin: 0 auto;
   padding: 2rem; */
@@ -115,7 +115,7 @@ sl-button:hover>sl-icon {
 .hint {
   background-color: hsla(220, 100%, 30%, .8);
   border-radius: 25%;
-  padding: 8px;
+  padding: 2px 8px;
   margin: 8px;
 
   p {
