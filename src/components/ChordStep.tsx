@@ -24,19 +24,19 @@ type ChordStepProps = {
 
 export const ChordStep = ({ title, chordList, setChordList, chordPattern, setChordPattern, arpPattern, setArpPattern, useSeventh, setUseSeventh }: ChordStepProps) => {
     const dispatch = useContext(WorkflowDispatchContext)
-    
+
     return (
         <div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', alignItems: 'center', width: '80%', margin: 'auto'}}>
-                <SlButton 
-                size="small" 
-                style={{justifySelf: 'center'}}
-                 onClick={() => {
-                    dispatch?.({
-                        type: 'setStep',
-                        step: WorkflowStep.DRUMS
-                    })
-                 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', alignItems: 'center', width: '80%', margin: 'auto' }}>
+                <SlButton
+                    size="small"
+                    style={{ justifySelf: 'center' }}
+                    onClick={() => {
+                        dispatch?.({
+                            type: 'setStep',
+                            step: WorkflowStep.DRUMS
+                        })
+                    }}>
                     <SlIcon name="rewind" slot="prefix"></SlIcon>🥁 Drums
                 </SlButton>
                 <h3 className="step-header">
@@ -110,6 +110,16 @@ export const ChordStep = ({ title, chordList, setChordList, chordPattern, setCho
                 </div>
 
             </div>
+            <SlButton
+                variant="success"
+                size="large"
+                onClick={() => {
+                    dispatch?.({ type: "setStep", step: WorkflowStep.MELODY })
+                }}
+            >
+                <SlIcon slot="prefix" name="caret-right-fill" style={{ fontWeight: 'bold' }} />
+                Next Step
+            </SlButton>
         </div>
     )
 }

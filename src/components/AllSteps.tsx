@@ -17,6 +17,7 @@ import { useChordPart } from "../hooks/useChordPart"
 import { ChordStep } from "./ChordStep"
 import { NewSongStep } from "./NewSongStep"
 import { getTransport } from "tone";
+import { MelodyStep } from "./MelodyStep";
 
 export type Song = {
     title: string;
@@ -111,6 +112,7 @@ export const AllSteps = () => {
     const [arpPattern, setArpPattern] = React.useState<ArpPattern>(parseArpPatternParam(urlParams.get('arp')))
     useChordPart({ chordList, chordPattern, arpPattern, chordSynth, isStarted, playChords: areChordsEnabled, useSeventh })
 
+    const [lyrics, setLyrics] = React.useState('')
     return (
         <>
             {/* <nav> */}
@@ -140,6 +142,14 @@ export const AllSteps = () => {
                             setArpPattern={setArpPattern}
                             useSeventh={useSeventh}
                             setUseSeventh={setUseSeventh}
+                        />
+                    }
+                    {step === WorkflowStep.MELODY &&
+                        <MelodyStep
+                            title={title}
+                            chordList={chordList}
+                            lyrics={lyrics}
+                            setLyrics={setLyrics}
                         />
                     }
                 </main>

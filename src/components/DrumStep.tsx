@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 
 import SlButton from "@shoelace-style/shoelace/dist/react/button/index.js";
 import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index.js"
@@ -9,7 +9,6 @@ import { DrumPreset } from "../utils/drumPresets"
 import { WorkflowStep } from "../utils/workflow";
 import { WorkflowDispatchContext } from "./WorkflowContext";
 import { PlayButton } from "./PlayButton";
-import { getTransport } from "tone";
 
 type DrumStepProps = {
     drumPreset: DrumPreset,
@@ -21,32 +20,15 @@ type DrumStepProps = {
 
 export const DrumStep = (props: DrumStepProps) => {
     const { drumPreset, setDrumPreset, title, tempo, setTempo } = props
-    const [isPlaying, setIsPlaying] = useState(true)
     const dispatch = useContext(WorkflowDispatchContext)
-
 
     return (
         <div className="step">
             <h3 className="step-header"><span className="step-num">Step 2</span>: Rhythm</h3>
             <h2 className="title" style={{ margin: 12 }}>Song: <span className="emphasize">{title}</span></h2>
-            {/* <div> */}
-            <PlayButton
-                isPlaying={isPlaying}
-                onClick={() => {
-                    const transport = getTransport()
-                    if (transport.state === 'started') {
-                        setIsPlaying(false)
-                        transport.pause()
-                    } else {
-                        setIsPlaying(true)
-                        transport.start()
-                    }
-                }} /
-            >
-            {/* </div> */}
+            <PlayButton />
 
             <div className="beat-select">
-                {/* <div style={{ display: 'flex' }}> */}
                 <div className="tempo-selector">
 
                     <div style={{ fontWeight: 'bold' }}>
