@@ -52,17 +52,16 @@ export const ShareStep = (props: ShareStepProps) => {
                     variant="success"
                     style={{ justifySelf: 'center' }}
                     onClick={async () => {
-                        if (navigator?.canShare?.()) {
-                            await navigator.share({
-                                url: shareUrl,
-                                text: "Check out my song!",
-                                title
-                            })
+                        const shareData = {
+                            url: shareUrl,
+                            text: "Check out my song!",
+                            title
+                        }
+                        if (navigator?.canShare?.(shareData)) {
+                            await navigator.share()
                         } else {
-                            console.log(shareUrl)
                             navigator.clipboard.writeText(shareUrl)
                         }
-
                     }}>
                     <SlIcon name="send" slot="prefix"></SlIcon>Share
                 </SlButton>
