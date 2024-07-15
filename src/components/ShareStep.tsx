@@ -58,7 +58,7 @@ export const ShareStep = (props: ShareStepProps) => {
                             title
                         }
                         if (navigator?.canShare?.(shareData)) {
-                            await navigator.share()
+                            await navigator.share(shareData)
                         } else {
                             navigator.clipboard.writeText(shareUrl)
                         }
