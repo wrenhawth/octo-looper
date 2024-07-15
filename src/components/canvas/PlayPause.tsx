@@ -6,7 +6,6 @@ import { ZINDEX } from "../../utils/zIndex"
 import { useCanvasWidth } from "./utils"
 
 export const PlayPause = () => {
-    const [isHovering, setIsHovering] = useState(false)
     const [isPlaying, setIsPlaying] = useState(false)
     const width = useCanvasWidth()
     useTick(() => {
@@ -23,7 +22,7 @@ export const PlayPause = () => {
     })
 
 
-    const iconFill = isHovering ? ['hsl(20deg 100% 60%)', 'hsl(40deg 100% 60%)'] : ['hsl(20deg 100% 80%)', 'hsl(40deg 100% 80%)']
+    // const iconFill = isHovering ? ['hsl(20deg 100% 60%)', 'hsl(40deg 100% 60%)'] : ['hsl(20deg 100% 80%)', 'hsl(40deg 100% 80%)']
     return (
         <Container
             x={width / 2}
@@ -32,17 +31,11 @@ export const PlayPause = () => {
             zIndex={ZINDEX.OCTOPUS + 1}
         >
             <Text
-                text={isPlaying ? "⏸" : "⏵"}
+                text={isPlaying ? "⏸️" : "▶️"}
                 // y={HEIGHT / 2 - 50}
                 y={50}
                 anchor={0.5}
                 eventMode='static'
-                pointerover={() => {
-                    setIsHovering(true)
-                }}
-                pointerout={() => {
-                    setIsHovering(false)
-                }}
                 pointertap={() => {
                     const transport = getTransport()
                     if (transport.state === 'started') {
@@ -52,11 +45,10 @@ export const PlayPause = () => {
                     }
                 }}
                 style={{
-                    fontSize: 48,
+                    fontSize: 32,
                     stroke: '#ffffff',
-                    fill: iconFill,
                     // fill: iconFill,
-                    fillGradientType: 0
+                    // fillGradientType: 0
                     // fill: ['#ffffff', '#eeeeee']
                 } as ComponentProps<typeof Text>['style']}
             />
