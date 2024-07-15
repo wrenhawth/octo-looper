@@ -47,7 +47,7 @@ export const MelodyStep = (props: MelodyStepProps) => {
                         You can sing soft, loud, or any way you want 💖
                     </li>
                     <li>
-                        Start by trying to sing close to the sounds you hear
+                        Start by trying to sing or hum close to the sounds you hear
                     </li>
                 </ul>
             </div>
@@ -66,6 +66,18 @@ export const MelodyStep = (props: MelodyStepProps) => {
                     }}
                 ></SlTextArea>
             </div>
+
+            <SlButton
+                variant="success"
+                size="large"
+                onClick={() => {
+                    dispatch?.({ type: "setStep", step: WorkflowStep.SHARE })
+                }}
+                
+            >
+                <SlIcon slot="prefix" name="caret-right-fill" style={{ fontWeight: 'bold' }} />
+                Next Step
+            </SlButton>
         </div>
     )
 }

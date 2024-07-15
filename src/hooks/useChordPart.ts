@@ -1,9 +1,8 @@
 import { getTransport, Part, PolySynth } from "tone"
 import { ArpPattern, ChordEvent, ChordPattern, fillChordPattern } from "../utils/chordPatterns"
-import { CHORD_TO_INDEX, ChordSymbol, INITIAL_CHORD_LIST } from "../utils/basicChords"
+import { CHORD_TO_INDEX, ChordSymbol } from "../utils/basicChords"
 import React from "react"
 import { DEFAULT_SCALE_OPTIONS, scaleToSevenths, scaleToTriads } from "../utils/chords"
-import _ from "lodash"
 
 type ChordPart = Part<ChordEvent>
 type ChordParts = Array<{
@@ -44,16 +43,17 @@ export const useChordPart = (options: ChordPartOptions) => {
         if (isStarted && playChords) {
             if (chordPartRefs.current == null) {
                 const initialTriads = scaleToTriads(DEFAULT_SCALE_OPTIONS)
-                _.times(4, (i) => {
+                const initialSevenths = scaleToSevenths(DEFAULT_SCALE_OPTIONS)
+                chordList.forEach((c, i) => {
                     if (chordPartRefs.current == null) {
                         chordPartRefs.current = []
                     }
 
-                    const initialRomanNumeral = INITIAL_CHORD_LIST[i]
+                    const initialRomanNumeral = c
+                    const chordIndex = CHORD_TO_INDEX[initialRomanNumeral]
+                    const initialChord = useSeventh[i] ? initialSevenths[chordIndex]?.notes  || ['C5'] : initialTriads[chordIndex]?.notes || ['C5']
 
-                    const initialChord = initialTriads[CHORD_TO_INDEX[initialRomanNumeral]]?.notes || ['C5']
-
-                    const initialPartValue = fillChordPattern(i, initialChord, 'DDUUDU', arpPattern)
+                    const initialPartValue = fillChordPattern(i, initialChord, chordPattern, arpPattern)
 
                     const part = new Part((time, value) => {
                         chordSynth.current?.triggerAttackRelease(value.notes || ['C4'], value.duration || '8n', time, value.velocity)
@@ -72,7 +72,7 @@ export const useChordPart = (options: ChordPartOptions) => {
                 })
             }
         }
-    }, [chordSynth, playChords, isStarted, arpPattern])
+    }, [chordList, chordSynth, playChords, isStarted, chordPattern, arpPattern, useSeventh])
 
 
     React.useEffect(() => {

@@ -11,10 +11,11 @@ import { generateTitleOptions } from "../utils/title";
 type NewSongProps = {
     title: string
     persistTitle: React.Dispatch<React.SetStateAction<string>>
+    isLoadedSong: boolean
 }
 
 export const NewSongStep = (props: NewSongProps) => {
-    const { title, persistTitle } = props
+    const { title, isLoadedSong, persistTitle } = props
     const dispatch = useContext(WorkflowDispatchContext)
     const [options, setOptions] = React.useState(generateTitleOptions())
     // const [title, setTitle] = React.useState('')
@@ -25,34 +26,37 @@ export const NewSongStep = (props: NewSongProps) => {
         <h2 className="octo" style={{ margin: 0 }}>🐙</h2>
         <div className="tempo-selector">
             <h3 className="step-header"><span className="step-num">Step 1</span>: Song Name</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', alignItems: 'center' }}>
-                <p className="hint" style={{ gridColumn: 2 }}>Pick a silly one ↓</p>
-                <div>
-                    <SlButton
-                        // size="small"
-                        // style={{ margin: 16 }}
-                        onClick={() => setOptions(generateTitleOptions())}
-                    >
-                        🎲Random🎲
-                    </SlButton>
+            {!isLoadedSong && <>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', alignItems: 'center' }}>
+                    <p className="hint" style={{ gridColumn: 2 }}>Pick a silly one ↓</p>
+                    <div>
+                        <SlButton
+                            // size="small"
+                            // style={{ margin: 16 }}
+                            onClick={() => setOptions(generateTitleOptions())}
+                        >
+                            🎲Random🎲
+                        </SlButton>
+                    </div>
                 </div>
-            </div>
-            <div className="name-options">
-                {options.map((o) => (
-                    <p
-                        key={o}
-                        className={o === title ? "selected" : undefined}
-                        onClick={() => {
-                            // setTitle(o)
-                            persistTitle(o)
-                        }}
-                    >
-                        {o}
-                    </p>
-                ))}
-            </div>
+                <div className="name-options">
+                    {options.map((o) => (
+                        <p
+                            key={o}
+                            className={o === title ? "selected" : undefined}
+                            onClick={() => {
+                                // setTitle(o)
+                                persistTitle(o)
+                            }}
+                        >
+                            {o}
+                        </p>
+                    ))}
+                </div>
+            </>}
+
             <div>
-                <div className="hint">Or make your own ↓</div>
+                {!isLoadedSong && <div className="hint">Or make your own ↓</div>}
                 <SlInput
                     value={title}
                     onSlChange={(e) => {
@@ -83,8 +87,8 @@ export const NewSongStep = (props: NewSongProps) => {
 
             }}
         >
-            <SlIcon slot="prefix" name="plus-lg" style={{ fontWeight: 'bold' }} />
-            New Song
+            <SlIcon slot="prefix" name="caret-right-fill" style={{ fontWeight: 'bold' }} />
+            {isLoadedSong ? "Start Song" : "New Song"}
         </SlButton>
     </div>
 }

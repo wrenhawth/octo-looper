@@ -309,6 +309,10 @@ sl-select::part(base) {
   background-color: var(--sl-color-teal-500);
 }
 
+.share-tab::part(base) {
+  background-color: var(--sl-color-cyan-500);
+}
+
 sl-tab[active]::part(base) {
   font-weight: bolder;
   text-decoration: underline;

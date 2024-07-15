@@ -24,7 +24,7 @@ export const DrumStep = (props: DrumStepProps) => {
 
     return (
         <div className="step">
-            <h3 className="step-header"><span className="step-num">Step 2</span>: Rhythm</h3>
+            <h3 className="step-header"><span className="step-num">Step 2</span>: Drums</h3>
             <h2 className="title" style={{ margin: 12 }}>Song: <span className="emphasize">{title}</span></h2>
             <PlayButton />
 

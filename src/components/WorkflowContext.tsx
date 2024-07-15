@@ -28,7 +28,17 @@ function workflowReducer(workflow: Workflow, action: WorkflowAction) {
             }
         }
         case "start":
-            return { ...workflow, isStarted: true }
+            return {
+                ...workflow,
+                isStarted: true
+            }
+        case "unlock":
+            return {
+                ...workflow,
+                areDrumsEnabled: true,
+                areChordsEnabled: true,
+                isMelodyEnabled: true
+            }
         default:
             return workflow
     }
@@ -47,6 +57,8 @@ type WorkflowAction = {
     step: WorkflowStep
 } | {
     type: "start"
+} | {
+    type: "unlock"
 }
 
 export const WorkflowProvider = ({ children }: { children: React.ReactNode }) => {

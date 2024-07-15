@@ -18,6 +18,7 @@ import { ChordStep } from "./ChordStep"
 import { NewSongStep } from "./NewSongStep"
 import { getTransport } from "tone";
 import { MelodyStep } from "./MelodyStep";
+import { ShareStep } from "./ShareStep";
 
 export type Song = {
     title: string;
@@ -59,7 +60,7 @@ const parseChordListParam = (param: string[] | null) => {
 }
 
 const parseSeventhsParam = (param: string[] | null, length: number) => {
-    const sevenths = Array.from({ length: INITIAL_CHORD_LIST.length }, () => false)
+    const sevenths = Array.from({ length }, () => false)
     param?.forEach((i) => {
         const num = Number.parseInt(i)
         if (Number.isInteger(num) && num > 0 && num < length) {
@@ -89,8 +90,11 @@ export const AllSteps = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const { isStarted, step, areDrumsEnabled, areChordsEnabled, isMelodyEnabled } = useContext(WorkflowContext)
     const dispatch = useContext(WorkflowDispatchContext)
+
     const [title, setTitle] = React.useState(urlParams.get('title') || '')
     const [tempo, setTempo] = React.useState<number>(Number.parseInt(urlParams.get('tempo') || `${DEFAULT_TEMPO}`) ?? DEFAULT_TEMPO)
+
+    const isLoadedSong = urlParams.get('title') != null
 
     useEffect(() => {
         const transport = getTransport()
@@ -112,14 +116,33 @@ export const AllSteps = () => {
     const [arpPattern, setArpPattern] = React.useState<ArpPattern>(parseArpPatternParam(urlParams.get('arp')))
     useChordPart({ chordList, chordPattern, arpPattern, chordSynth, isStarted, playChords: areChordsEnabled, useSeventh })
 
-    const [lyrics, setLyrics] = React.useState('')
+    const [lyrics, setLyrics] = React.useState(urlParams.get('lyrics') || '')
+
+    const shareUrl = React.useMemo(() => {
+        const params = new URLSearchParams({
+            title,
+            tempo: tempo.toFixed(0),
+            drums: drumPreset,
+            chordPattern,
+            arp: arpPattern,
+            lyrics,
+        })
+        chordList.forEach((c) => params.append('chords', c))
+        useSeventh.forEach((s, i) => {
+            if (s) {
+                params.append('sev', i.toFixed(0))
+            }
+        })
+        return `${window.location.origin}${window.location.pathname}?${params.toString()}`
+    }, [title, tempo, drumPreset, chordPattern, arpPattern, lyrics, chordList, useSeventh])
+
     return (
         <>
             {/* <nav> */}
             <div>
                 <main className="main">
                     {step === WorkflowStep.NEW_SONG &&
-                        <NewSongStep title={title} persistTitle={setTitle} />
+                        <NewSongStep title={title} isLoadedSong={isLoadedSong} persistTitle={setTitle} />
                     }
                     {step === WorkflowStep.DRUMS &&
                         <DrumStep
@@ -150,6 +173,12 @@ export const AllSteps = () => {
                             chordList={chordList}
                             lyrics={lyrics}
                             setLyrics={setLyrics}
+                        />
+                    }
+                    {step === WorkflowStep.SHARE &&
+                        <ShareStep
+                            title={title}
+                            shareUrl={shareUrl}
                         />
                     }
                 </main>
@@ -198,6 +227,14 @@ export const AllSteps = () => {
                         onClick={() => isMelodyEnabled && dispatch?.({ type: "setStep", step: WorkflowStep.MELODY })}
 
                     >4: Sing
+                    </SlTab>
+                    <SlTab
+                        className="tab share-tab"
+                        slot="nav"
+                        active={step === WorkflowStep.SHARE}
+                        disabled={!isMelodyEnabled}
+                        onClick={() => isMelodyEnabled && dispatch?.({ type: "setStep", step: WorkflowStep.SHARE })}
+                    >5: Share
                     </SlTab>
                 </SlTabGroup>
             </div>

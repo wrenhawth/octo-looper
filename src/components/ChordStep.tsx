@@ -116,6 +116,7 @@ export const ChordStep = ({ title, chordList, setChordList, chordPattern, setCho
                 onClick={() => {
                     dispatch?.({ type: "setStep", step: WorkflowStep.MELODY })
                 }}
+                
             >
                 <SlIcon slot="prefix" name="caret-right-fill" style={{ fontWeight: 'bold' }} />
                 Next Step
