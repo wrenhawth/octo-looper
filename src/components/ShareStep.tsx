@@ -3,7 +3,7 @@ import SlIcon from "@shoelace-style/shoelace/dist/react/icon/index.js"
 
 
 import { WorkflowDispatchContext } from "./WorkflowContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { WorkflowStep } from "../utils/workflow";
 import { PlayButton } from "./PlayButton";
 
@@ -14,6 +14,7 @@ type ShareStepProps = {
 
 export const ShareStep = (props: ShareStepProps) => {
     const { title, shareUrl } = props
+    const [shared, setShared] = useState(false)
     const dispatch = useContext(WorkflowDispatchContext)
 
     return (
@@ -62,8 +63,11 @@ export const ShareStep = (props: ShareStepProps) => {
                         } else {
                             navigator.clipboard.writeText(shareUrl)
                         }
+                        navigator.clipboard.writeText(shareUrl)
+                        setShared(true)
                     }}>
-                    <SlIcon name="send" slot="prefix"></SlIcon>Share
+                    <SlIcon name="send" slot="prefix"></SlIcon>
+                    {shared ? "Copied to Clipboard" : "Share"}
                 </SlButton>
             </div>
         </div>
