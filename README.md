@@ -11,6 +11,15 @@ OctoLooper is a music composition tool designed to be fun and accessible for you
 
 OctoLooper can be accessed through a ✨[Live Demo](https://wrenhawth.github.io/octo-looper/)✨ hosted on GitHub Pages
 
+## Running Locally
+
+OctoLooper can also be run locally using the following commands:
+
+```
+npm install
+npm run dev
+```
+
 ## Features
 
 OctoLooper separates the creative process for creating a short musical loop into a number of simplified steps:
